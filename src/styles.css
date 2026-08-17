@@ -65,6 +65,14 @@
   --color-aurora-amber: var(--aurora-amber);
   --color-tabbar: var(--tabbar);
   --color-tabbar-foreground: var(--tabbar-foreground);
+  --color-panel: var(--panel);
+  --color-panel-foreground: var(--panel-foreground);
+  --color-panel-muted: var(--panel-muted);
+  --color-cream: var(--cream);
+  --color-cream-foreground: var(--cream-foreground);
+  --color-cta: var(--cta);
+  --color-cta-foreground: var(--cta-foreground);
+  --color-raised: var(--raised);
   --radius-shell: var(--radius-shell-value);
 }
 
@@ -89,6 +97,14 @@
   --aurora-amber: oklch(0.82 0.12 82);
   --tabbar: oklch(0.92 0.012 90);
   --tabbar-foreground: oklch(0.42 0.02 300);
+  --panel: oklch(1 0 0);
+  --panel-foreground: oklch(0.2 0.01 300);
+  --panel-muted: oklch(0.55 0.012 300);
+  --cream: oklch(0.975 0.012 90);
+  --cream-foreground: oklch(0.24 0.015 300);
+  --cta: oklch(0.63 0.16 43);
+  --cta-foreground: oklch(0.99 0.005 90);
+  --raised: oklch(0.33 0.036 305 / 65%);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(0.72 0.02 300 / 40%);
@@ -191,5 +207,95 @@
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0.9;
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    opacity: 0.9;
+  }
+}
+
+@utility pulse-ring {
+  animation: pulse-ring 2s ease-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@utility fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes ellipsis-blink {
+  0%,
+  20% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@utility live-dots {
+  & > span {
+    animation: ellipsis-blink 1.4s ease-in-out infinite;
+  }
+  & > span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  & > span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & > span {
+      animation: none;
+    }
+  }
+}
+
+@utility scrim {
+  background-image: linear-gradient(
+    to top,
+    oklch(0.15 0.02 305 / 88%) 0%,
+    oklch(0.15 0.02 305 / 45%) 45%,
+    transparent 100%
+  );
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
