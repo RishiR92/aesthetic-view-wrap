@@ -13,6 +13,8 @@ export type Place = {
   photos: string[];
   tags: string[];
   reason?: string;
+  distance?: string;
+  confirmed?: string;
 };
 
 export type ChannelStep = {
@@ -58,6 +60,8 @@ export const tasks: Task[] = [
         reviews: 1504,
         photos: [milkCake, chocolate, baklava],
         tags: ["Dine-in", "Delivery", "Popular"],
+        distance: "1.2 mi",
+        confirmed: "Milk cake today",
         reason:
           "Widest selection of Asian-inspired desserts and milk toast, with late evening hours.",
       },
@@ -70,6 +74,8 @@ export const tasks: Task[] = [
         reviews: 801,
         photos: [baklava],
         tags: ["Takeout"],
+        distance: "0.6 mi",
+        confirmed: "Milk cake today",
       },
       {
         id: "dandelion",
@@ -80,6 +86,7 @@ export const tasks: Task[] = [
         reviews: 2748,
         photos: [chocolate],
         tags: ["Dine-in", "Popular"],
+        distance: "1.8 mi",
       },
       {
         id: "craftsman",
@@ -90,6 +97,8 @@ export const tasks: Task[] = [
         reviews: 1912,
         photos: [milkCake],
         tags: ["Bakery"],
+        distance: "1.9 mi",
+        confirmed: "Milk cake today",
       },
     ],
     steps: [
@@ -124,6 +133,7 @@ export const tasks: Task[] = [
         reviews: 412,
         photos: [dental],
         tags: ["Insurance", "Emergency"],
+        distance: "2.4 mi",
       },
     ],
     steps: [

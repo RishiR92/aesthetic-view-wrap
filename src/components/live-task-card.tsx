@@ -7,7 +7,7 @@ export function LiveTaskCard({ task }: { task: Task }) {
     <Link
       to="/task/$taskId/status"
       params={{ taskId: task.id }}
-      className="block rounded-2xl border border-border/60 bg-raised p-4 backdrop-blur-md transition-transform active:scale-[0.985]"
+      className="block rounded-2xl border border-border/60 bg-raised px-4 py-3.5 backdrop-blur-md transition-transform active:scale-[0.985]"
     >
       <div className="flex items-start gap-3">
         <span className="mt-1 grid size-8 shrink-0 place-items-center rounded-full bg-cta/15 text-cta/40 pulse-ring">
@@ -15,7 +15,7 @@ export function LiveTaskCard({ task }: { task: Task }) {
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-semibold text-foreground">{task.title}</p>
-          <p className="mt-0.5 flex items-center gap-0.5 text-[13px] text-muted-foreground">
+          <p className="mt-0.5 flex items-center gap-0.5 text-[14px] font-medium text-primary">
             {task.liveLine}
             <span aria-hidden className="live-dots">
               <span>.</span>
@@ -28,26 +28,6 @@ export function LiveTaskCard({ task }: { task: Task }) {
           <span className="text-[11px] text-muted-foreground">{task.ago}</span>
           <ChevronRight className="size-4 text-muted-foreground" />
         </div>
-      </div>
-
-      <div className="mt-3 flex gap-1.5">
-        {task.steps.map((s) => (
-          <span key={s.label} className="flex-1">
-            <span
-              className={
-                "block h-1 rounded-full " +
-                (s.state === "done"
-                  ? "bg-primary/70"
-                  : s.state === "active"
-                    ? "bg-cta"
-                    : "bg-border")
-              }
-            />
-            <span className="mt-1.5 block text-[10px] uppercase tracking-wider text-muted-foreground">
-              {s.label}
-            </span>
-          </span>
-        ))}
       </div>
     </Link>
   );
