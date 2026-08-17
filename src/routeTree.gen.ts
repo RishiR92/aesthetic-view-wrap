@@ -10,33 +10,52 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TaskTaskIdRouteImport } from './routes/task.$taskId'
+import { Route as TaskTaskIdStatusRouteImport } from './routes/task.$taskId.status'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TaskTaskIdRoute = TaskTaskIdRouteImport.update({
+  id: '/task/$taskId',
+  path: '/task/$taskId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TaskTaskIdStatusRoute = TaskTaskIdStatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => TaskTaskIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/task/$taskId': typeof TaskTaskIdRouteWithChildren
+  '/task/$taskId/status': typeof TaskTaskIdStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/task/$taskId': typeof TaskTaskIdRouteWithChildren
+  '/task/$taskId/status': typeof TaskTaskIdStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/task/$taskId': typeof TaskTaskIdRouteWithChildren
+  '/task/$taskId/status': typeof TaskTaskIdStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/task/$taskId' | '/task/$taskId/status'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/task/$taskId' | '/task/$taskId/status'
+  id: '__root__' | '/' | '/task/$taskId' | '/task/$taskId/status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TaskTaskIdRoute: typeof TaskTaskIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +67,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/task/$taskId': {
+      id: '/task/$taskId'
+      path: '/task/$taskId'
+      fullPath: '/task/$taskId'
+      preLoaderRoute: typeof TaskTaskIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/task/$taskId/status': {
+      id: '/task/$taskId/status'
+      path: '/status'
+      fullPath: '/task/$taskId/status'
+      preLoaderRoute: typeof TaskTaskIdStatusRouteImport
+      parentRoute: typeof TaskTaskIdRoute
+    }
   }
 }
 
+interface TaskTaskIdRouteChildren {
+  TaskTaskIdStatusRoute: typeof TaskTaskIdStatusRoute
+}
+
+const TaskTaskIdRouteChildren: TaskTaskIdRouteChildren = {
+  TaskTaskIdStatusRoute: TaskTaskIdStatusRoute,
+}
+
+const TaskTaskIdRouteWithChildren = TaskTaskIdRoute._addFileChildren(
+  TaskTaskIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TaskTaskIdRoute: TaskTaskIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

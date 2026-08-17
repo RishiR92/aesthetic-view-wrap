@@ -8,7 +8,7 @@ import { PlaceHeroCard } from "@/components/place-hero-card";
 import { PlaceTile } from "@/components/place-tile";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/task/$taskId")({
+export const Route = createFileRoute("/task/$taskId/")({
   loader: ({ params }) => {
     const task = getTask(params.taskId);
     if (!task) throw notFound();
