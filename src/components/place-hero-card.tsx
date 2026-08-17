@@ -23,7 +23,7 @@ export function PlaceHeroCard({
       )}
     >
       <div className="relative">
-        <PhotoCarousel photos={place.photos} alt={place.name} />
+        <PhotoCarousel photos={place.photos} alt={place.name} eager />
         <div aria-hidden className="scrim pointer-events-none absolute inset-x-0 bottom-0 h-2/3" />
         <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary-foreground">
           ✦ Asmi pick
@@ -39,7 +39,11 @@ export function PlaceHeroCard({
         <h3 className="text-[19px] font-bold leading-tight text-cream-foreground">{place.name}</h3>
         <p className="mt-1 text-[13px] leading-snug text-cream-foreground/60">
           {place.address} · {place.hours}
+          {place.lead ? ` · ${place.lead}` : ""}
         </p>
+        {place.price ? (
+          <p className="mt-1 text-[13px] font-semibold text-cream-foreground">{place.price}</p>
+        ) : null}
         <p className="mt-2 flex items-center gap-1.5 text-[13px] font-semibold text-cream-foreground">
           <Star className="size-3.5 fill-current text-primary" strokeWidth={0} />
           {place.rating.toFixed(1)}
