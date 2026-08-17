@@ -69,7 +69,7 @@ function Index() {
                         {task.title}
                       </h3>
                       <p className="mt-1.5 text-[13px] text-panel-muted">
-                        {task.liveLine} — pick one and Asmi will handle it
+                        Pick one and Asmi will call for you
                       </p>
                     </div>
                     <ChevronRight className="mt-1 size-5 shrink-0 text-panel-muted" />
