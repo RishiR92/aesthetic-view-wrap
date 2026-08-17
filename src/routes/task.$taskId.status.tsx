@@ -217,7 +217,7 @@ function TaskStatus() {
                     {task.recording.transcript.map((line) => (
                       <li key={line.text} className="text-[13px] leading-snug">
                         <span className="mr-1.5 font-bold text-cream-foreground">
-                          {line.from === "asmi" ? "Asmi:" : "Front desk:"}
+                          {line.from === "asmi" ? "Asmi:" : "Them:"}
                         </span>
                         <span className="text-cream-foreground/80">{line.text}</span>
                       </li>
