@@ -5,7 +5,7 @@ import { ChevronDown, Phone } from "lucide-react";
 import { getTask } from "@/lib/mock-tasks";
 import { TopBar } from "@/components/top-bar";
 import { PlaceHeroCard } from "@/components/place-hero-card";
-import { PlaceTile } from "@/components/place-tile";
+import { PlaceRow } from "@/components/place-row";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/task/$taskId/")({
@@ -79,9 +79,9 @@ function TaskOptions() {
 
         {rest.length ? (
           <div className="fade-up space-y-3" style={{ animationDelay: "120ms" }}>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2.5">
               {visible.map((place) => (
-                <PlaceTile
+                <PlaceRow
                   key={place.id}
                   place={place}
                   selected={selected === place.id}
