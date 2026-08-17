@@ -1,6 +1,6 @@
-import mangoHeart from "@/assets/mango-heart-1.jpg";
-import mangoTop from "@/assets/mango-heart-2.jpg";
-import mangoSlice from "@/assets/mango-slice.jpg";
+import bakeryStorefront from "@/assets/bakery-storefront.jpg";
+import bakeryCase from "@/assets/bakery-case.jpg";
+import bakeryKitchen from "@/assets/bakery-kitchen.jpg";
 import bakeryInterior from "@/assets/bakery-interior.jpg";
 import cakePiping from "@/assets/cake-piping.jpg";
 import cakeDisplay from "@/assets/cake-display.jpg";
@@ -58,9 +58,10 @@ export const tasks: Task[] = [
     title: "Custom mango mousse heart cake",
     brief:
       'Find a San Francisco patisserie that can make a heart-shaped mango mousse cake piped with "Love you Danny 💜" for pickup Saturday afternoon.',
-    asmiAction: 'Call each bakery to confirm heart mould, mango mousse and the "Love you Danny 💜" message.',
-    status: "needs-you",
-    liveLine: "4 options ready",
+    asmiAction:
+      'Called b. Patisserie to confirm the heart mould, mango mousse and the "Love you Danny 💜" piping.',
+    status: "in-motion",
+    liveLine: "Order confirmed",
     ago: "4m ago",
     options: [
       {
@@ -70,7 +71,7 @@ export const tasks: Task[] = [
         hours: "Open · Closes 6 PM",
         rating: 4.6,
         reviews: 3120,
-        photos: [mangoHeart, mangoTop, cakePiping, mangoSlice],
+        photos: [bakeryStorefront, bakeryCase, cakePiping, bakeryKitchen],
         tags: ["Custom message", "Heart mould", "48h notice"],
         distance: "1.4 mi",
         confirmed: "Mango mousse · Saturday 2 PM",
@@ -86,7 +87,7 @@ export const tasks: Task[] = [
         hours: "Open · Closes 6:30 PM",
         rating: 4.5,
         reviews: 1860,
-        photos: [cakeDisplay, bakeryInterior, mangoTop],
+        photos: [cakeDisplay, bakeryInterior, bakeryCase],
         tags: ["Custom message", "Same-week"],
         distance: "3.1 mi",
         confirmed: "Mango mousse · Saturday 3 PM",
@@ -100,39 +101,59 @@ export const tasks: Task[] = [
         hours: "Open · Closes 7 PM",
         rating: 4.4,
         reviews: 1204,
-        photos: [bakeryInterior, cakeDisplay, mangoSlice],
+        photos: [bakeryInterior, bakeryKitchen, cakeDisplay],
         tags: ["Heart mould", "Pickup only"],
         distance: "2.2 mi",
         price: "$62 · 6 in",
         lead: "72h notice",
       },
-      {
-        id: "susiecakes",
-        name: "SusieCakes",
-        address: "565 Hayes St, Hayes Valley",
-        hours: "Open · Closes 7 PM",
-        rating: 4.3,
-        reviews: 980,
-        photos: [cakeDisplay, mangoHeart],
-        tags: ["Custom message", "Walk-in"],
-        distance: "1.1 mi",
-        confirmed: "Message piping today",
-        price: "$49 · 6 in",
-        lead: "24h notice",
-      },
     ],
     steps: [
-      { label: "Search", state: "done", detail: "12 found", icon: "retry" },
-      { label: "Call", state: "done", detail: "4 confirmed", icon: "call" },
-      { label: "Confirm", state: "active", detail: "Your pick", icon: "message" },
+      { label: "Call", state: "done", detail: "3m 06s", icon: "call" },
+      { label: "Retry", state: "skipped", detail: "Not needed", icon: "retry" },
+      { label: "Message", state: "done", detail: "Confirmed", icon: "message" },
+      { label: "Email", state: "skipped", detail: "Not needed", icon: "email" },
     ],
     timeline: [
-      { time: "3:02 PM", event: "Searched patisseries in SF that do custom mousse cakes", state: "done" },
-      { time: "3:09 PM", event: "Called 12 bakeries about a heart mango mousse cake", state: "done" },
-      { time: "3:21 PM", event: '4 confirmed the "Love you Danny 💜" piping', state: "done" },
-      { time: "3:22 PM", event: "Waiting for you to pick one to order", state: "active" },
+      { time: "3:02 PM", event: "Call placed to b. Patisserie · +1 415 440 1700", state: "done" },
+      { time: "3:05 PM", event: "Spoke with the cake desk — 3m 06s call", state: "done" },
+      { time: "3:06 PM", event: "Retry skipped — call connected first time", state: "skipped" },
+      { time: "3:12 PM", event: 'Message sent with the "Love you Danny 💜" piping note', state: "done" },
+      { time: "3:18 PM", event: "Bakery replied confirming Saturday 2:00 PM pickup", state: "done" },
+      { time: "3:19 PM", event: "Task complete — email follow-up not needed", state: "done" },
     ],
-    thread: [],
+    thread: [
+      {
+        from: "asmi",
+        text: 'Hi! Confirming the order from our call — 6" heart mango mousse cake, piped "Love you Danny 💜", pickup Saturday 2:00 PM.',
+        time: "3:12 PM",
+      },
+      {
+        from: "them",
+        text: "Confirmed! Heart mould booked, Alphonso mango mousse, purple heart included. $68, pay at pickup.",
+        time: "3:18 PM",
+      },
+      { from: "asmi", text: "Perfect — thank you! See you Saturday.", time: "3:19 PM" },
+    ],
+    outcome: {
+      label: "Resolved",
+      headline: 'b. Patisserie confirmed the heart mango mousse cake with "Love you Danny 💜" for Saturday 2:00 PM.',
+      detail:
+        "Asmi called the cake desk, confirmed the heart mould and Alphonso mango mousse, then locked the piping over message. $68, pay at pickup.",
+      at: "Aug 17, 3:19 PM",
+    },
+    recording: {
+      to: "+1 415 440 1700",
+      at: "3:02 PM",
+      duration: "3:06",
+      transcript: [
+        { from: "asmi", text: "Hi! I'd like a 6-inch heart-shaped mango mousse cake for Saturday pickup." },
+        { from: "them", text: "We can do that — heart mould is free Saturday, Alphonso mango mousse is in season." },
+        { from: "asmi", text: 'Great. Can you pipe "Love you Danny" with a purple heart at the end?' },
+        { from: "them", text: "Yes, hand-piped in purple. $68, ready at 2 PM." },
+        { from: "asmi", text: "Perfect, I'll text the details to confirm." },
+      ],
+    },
   },
   {
     id: "dentist",
