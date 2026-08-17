@@ -96,7 +96,7 @@ function TaskStatus() {
                 Done
               </span>
             </div>
-            <p className="mt-4 font-serif text-[26px] leading-[1.15] text-cream-foreground">
+            <p className="mt-4 font-display text-[26px] leading-[1.15] text-cream-foreground">
               {task.outcome.headline}
             </p>
             <p className="mt-4 border-t border-cream-foreground/10 pt-4 text-[14px] leading-snug text-cream-foreground/80">
