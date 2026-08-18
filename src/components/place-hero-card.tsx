@@ -23,7 +23,7 @@ export function PlaceHeroCard({
       )}
     >
       <div className="relative">
-        <PhotoCarousel photos={place.photos} alt={place.name} eager />
+        <PhotoCarousel photos={place.photos} alt={place.name} aspect="aspect-[16/9]" eager />
         <div aria-hidden className="scrim pointer-events-none absolute inset-x-0 bottom-0 h-2/3" />
         <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary-foreground">
           ✦ Asmi pick
@@ -35,8 +35,8 @@ export function PlaceHeroCard({
         ) : null}
       </div>
 
-      <div className="p-5">
-        <h3 className="text-[19px] font-bold leading-tight text-cream-foreground">{place.name}</h3>
+      <div className="p-4">
+        <h3 className="text-[18px] font-bold leading-tight text-cream-foreground">{place.name}</h3>
         <p className="mt-1 text-[13px] leading-snug text-cream-foreground/60">
           {place.address} · {place.hours}
           {place.lead ? ` · ${place.lead}` : ""}
@@ -56,7 +56,7 @@ export function PlaceHeroCard({
             {place.reason}
           </p>
         ) : null}
-        <div className="mt-4 flex flex-wrap gap-1.5">
+        <div className="mt-3 flex flex-wrap gap-1.5">
           {place.tags.map((t) => (
             <span
               key={t}
