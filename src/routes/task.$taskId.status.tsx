@@ -111,10 +111,12 @@ function TaskStatus() {
             Execution
           </h2>
 
-          <p className="mt-4 text-[11px] font-bold uppercase tracking-wider text-cream-foreground/50">
-            {task.asmiAction}
-          </p>
-          <span className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary/12 px-3 py-1.5 text-[13px] font-bold text-primary">
+          {task.asmiAction ? (
+            <p className="mt-4 text-[11px] font-bold uppercase tracking-wider text-cream-foreground/50">
+              {task.asmiAction}
+            </p>
+          ) : null}
+          <span className={cn("inline-flex items-center gap-2 rounded-full bg-primary/12 px-3 py-1.5 text-[13px] font-bold text-primary", task.asmiAction ? "mt-3" : "mt-4")}>
             <Check className="size-3.5" strokeWidth={3} />
             {task.liveLine}
           </span>
