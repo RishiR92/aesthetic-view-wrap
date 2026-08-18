@@ -13,9 +13,16 @@ export function PlaceRow({
   onSelect: () => void;
 }) {
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
       aria-pressed={selected}
       className={cn(
         "flex w-full items-stretch gap-3 overflow-hidden rounded-3xl bg-panel p-3 text-left transition-transform active:scale-[0.99]",
@@ -72,6 +79,6 @@ export function PlaceRow({
       <span className="w-[112px] shrink-0 overflow-hidden rounded-2xl">
         <PhotoCarousel photos={place.photos} alt={place.name} aspect="aspect-[3/4]" />
       </span>
-    </button>
+    </div>
   );
 }
