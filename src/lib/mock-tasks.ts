@@ -35,6 +35,7 @@ export type Task = {
   title: string;
   brief: string;
   asmiAction: string;
+  plan: string;
   status: "needs-you" | "in-motion";
   liveLine: string;
   ago: string;
@@ -59,6 +60,8 @@ export const tasks: Task[] = [
     brief:
       'Find a San Francisco patisserie that can make a heart-shaped mango mousse cake piped with "Love you Danny 💜" for pickup Saturday afternoon.',
     asmiAction: "",
+    plan:
+      'Asmi will call b. Patisserie to lock the heart mould, mango mousse and "Love you Danny 💜" piping for Saturday pickup.',
     status: "in-motion",
     liveLine: "Order confirmed",
     ago: "4m ago",
@@ -156,6 +159,7 @@ export const tasks: Task[] = [
     brief:
       "Send details (last name Kesley, phone +1 415 585 1500, found online) to Glen Park Dental to confirm a dentist appointment for Rish's toothache on Tuesday or Wednesday around 5:00 PM.",
     asmiAction: "Reached Glen Park Dental by call, then confirmed over message.",
+    plan: "Asmi will call your pick, hold the earliest cleaning slot and confirm it over message.",
     status: "in-motion",
     liveLine: "Appointment confirmed",
     ago: "8m ago",
