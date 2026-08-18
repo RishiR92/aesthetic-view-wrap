@@ -58,7 +58,7 @@ export const tasks: Task[] = [
     title: "Custom mango mousse heart cake",
     brief:
       'Find a San Francisco patisserie that can make a heart-shaped mango mousse cake piped with "Love you Danny 💜" for pickup Saturday afternoon.',
-    asmiAction: "Confirmed the heart mould, mango mousse and piping with b. Patisserie.",
+    asmiAction: "",
     status: "in-motion",
     liveLine: "Order confirmed",
     ago: "4m ago",
