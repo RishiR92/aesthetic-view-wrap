@@ -43,28 +43,26 @@ function TaskOptions() {
     <div className="flex min-h-0 flex-1 flex-col">
       <TopBar back />
 
-      <div className="flex-1 space-y-4 overflow-y-auto px-5 pb-6">
-        <section className="fade-up rounded-3xl bg-panel p-5">
-          <span className="inline-block rounded-full border border-panel-foreground/12 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-panel-muted">
-            {task.kind}
-          </span>
-          <h1 className="mt-3 text-[26px] font-bold leading-tight text-panel-foreground">
-            {task.title}
-          </h1>
-          <p className="mt-2 text-[13px] leading-snug text-panel-muted">{task.brief}</p>
-        </section>
-
-        <section
-          className="fade-up rounded-3xl bg-cream p-5"
-          style={{ animationDelay: "40ms" }}
-        >
-          <h2 className="text-[11px] font-bold uppercase tracking-wider text-primary">
-            Asmi actions
-          </h2>
-          <p className="mt-2 flex items-start gap-2.5 text-[14px] leading-snug text-cream-foreground">
+      <div className="flex-1 space-y-3 overflow-y-auto px-5 pb-6">
+        <section className="fade-up overflow-hidden rounded-3xl bg-panel">
+          <div className="p-4">
+            <span className="inline-block rounded-full border border-panel-foreground/12 px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-wider text-panel-muted">
+              {task.kind}
+            </span>
+            <h1 className="mt-2 text-[21px] font-bold leading-tight text-panel-foreground">
+              {task.title}
+            </h1>
+            <p className="mt-1.5 line-clamp-2 text-[12.5px] leading-snug text-panel-muted">
+              {task.brief}
+            </p>
+          </div>
+          <div className="flex items-start gap-2.5 bg-cream px-4 py-3">
             <Phone className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={2} />
-            {task.asmiAction}
-          </p>
+            <p className="text-[12.5px] leading-snug text-cream-foreground">
+              <span className="font-bold text-primary">Asmi will: </span>
+              {task.plan}
+            </p>
+          </div>
         </section>
 
         {hero ? (
