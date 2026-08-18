@@ -63,7 +63,7 @@ function TaskOptions() {
           </h2>
           <p className="mt-2 flex items-start gap-2.5 text-[14px] leading-snug text-cream-foreground">
             <Phone className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={2} />
-            {task.asmiAction}
+            {task.plan}
           </p>
         </section>
 
