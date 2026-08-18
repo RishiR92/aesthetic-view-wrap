@@ -77,8 +77,6 @@ export const tasks: Task[] = [
         confirmed: "Mango mousse · Saturday 2 PM",
         price: "$68 · 6 in",
         lead: "48h notice",
-        reason:
-          "Only shop that confirmed a heart mould, fresh Alphonso mango mousse and hand-piped script with the purple heart.",
       },
       {
         id: "schuberts",
@@ -115,12 +113,9 @@ export const tasks: Task[] = [
       { label: "Email", state: "skipped", detail: "Not needed", icon: "email" },
     ],
     timeline: [
-      { time: "3:02 PM", event: "Call placed to b. Patisserie · +1 415 440 1700", state: "done" },
       { time: "3:05 PM", event: "Spoke with the cake desk — 3m 06s call", state: "done" },
-      { time: "3:06 PM", event: "Retry skipped — call connected first time", state: "skipped" },
       { time: "3:12 PM", event: 'Message sent with the "Love you Danny 💜" piping note', state: "done" },
       { time: "3:18 PM", event: "Bakery replied confirming Saturday 2:00 PM pickup", state: "done" },
-      { time: "3:19 PM", event: "Task complete — email follow-up not needed", state: "done" },
     ],
     thread: [
       {
