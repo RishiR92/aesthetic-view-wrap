@@ -1,16 +1,17 @@
-import { Check, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import type { Place } from "@/lib/mock-tasks";
 import { PhotoCarousel } from "@/components/photo-carousel";
-import { PlaceActions } from "@/components/place-actions";
 import { cn } from "@/lib/utils";
 
 export function PlaceHeroCard({
   place,
   selected,
+  dimmed = false,
   onSelect,
 }: {
   place: Place;
   selected: boolean;
+  dimmed?: boolean;
   onSelect: () => void;
 }) {
   return (
@@ -25,9 +26,14 @@ export function PlaceHeroCard({
         }
       }}
       aria-pressed={selected}
+      style={selected ? { boxShadow: "var(--shadow-lift)" } : undefined}
       className={cn(
-        "relative block w-full overflow-hidden rounded-3xl bg-cream text-left transition-all duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
+        "relative block w-full overflow-hidden rounded-3xl bg-cream text-left transition-[transform,opacity,box-shadow] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.995] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        selected
+          ? "scale-[1.02] opacity-100 ring-1 ring-primary"
+          : dimmed
+            ? "scale-[0.99] opacity-[0.72]"
+            : "opacity-100",
       )}
     >
       <div className="relative">
@@ -36,23 +42,38 @@ export function PlaceHeroCard({
         <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary-foreground">
           ✦ Asmi pick
         </span>
-        <span
-          className={cn(
-            "absolute right-4 top-4 grid size-7 place-items-center rounded-full transition-colors",
-            selected
-              ? "bg-primary text-primary-foreground"
-              : "border border-panel/70 bg-foreground/20 text-transparent backdrop-blur",
-          )}
-        >
-          <Check className="size-4" strokeWidth={3} />
-        </span>
       </div>
 
-      <div className={cn("relative p-4", selected && "bg-primary/[0.06]")}>
+      {selected ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute bottom-4 left-0 top-4 w-[3px] rounded-full bg-primary"
+        />
+      ) : null}
+
+      <div className="p-4 pl-5">
         <h3 className="text-[18px] font-bold leading-tight text-cream-foreground">{place.name}</h3>
         <p className="mt-1 text-[13px] leading-snug text-cream-foreground/60">
           {place.address} · {place.hours}
           {place.lead ? ` · ${place.lead}` : ""}
+          {place.website ? (
+            <>
+              {" · "}
+              <a
+                href={place.website.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+                className="font-medium text-cream-foreground/80 underline decoration-cream-foreground/25 underline-offset-2 transition-opacity hover:opacity-70"
+              >
+                Website
+                <span aria-hidden className="ml-0.5 text-[10px]">
+                  ↗
+                </span>
+              </a>
+            </>
+          ) : null}
         </p>
         {place.price ? (
           <p className="mt-1 text-[13px] font-semibold text-cream-foreground">{place.price}</p>
@@ -79,7 +100,6 @@ export function PlaceHeroCard({
             </span>
           ))}
         </div>
-        <PlaceActions place={place} tone="cream" />
       </div>
     </div>
   );
