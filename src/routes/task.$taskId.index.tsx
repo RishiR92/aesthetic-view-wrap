@@ -71,6 +71,7 @@ function TaskOptions() {
             <PlaceHeroCard
               place={hero}
               selected={selected === hero.id}
+              dimmed={selected !== null && selected !== hero.id}
               onSelect={() => setSelected(hero.id)}
             />
           </div>
@@ -84,6 +85,7 @@ function TaskOptions() {
                   key={place.id}
                   place={place}
                   selected={selected === place.id}
+                  dimmed={selected !== null && selected !== place.id}
                   onSelect={() => setSelected(place.id)}
                 />
               ))}
