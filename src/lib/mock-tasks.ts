@@ -20,6 +20,8 @@ export type Place = {
   confirmed?: string;
   price?: string;
   lead?: string;
+  website?: { label: string; href: string };
+  phone?: string;
 };
 
 export type ChannelStep = {
@@ -79,6 +81,8 @@ export const tasks: Task[] = [
         confirmed: "Mango mousse · Saturday 2 PM",
         price: "$68 · 6 in",
         lead: "48h notice",
+        website: { label: "bpatisserie.com", href: "https://bpatisserie.com" },
+        phone: "+1 415 440 1700",
       },
       {
         id: "schuberts",
@@ -93,6 +97,8 @@ export const tasks: Task[] = [
         confirmed: "Mango mousse · Saturday 3 PM",
         price: "$54 · 7 in",
         lead: "24h notice",
+        website: { label: "schubertsbakery.com", href: "https://www.schubertsbakery.com" },
+        phone: "+1 415 752 1580",
       },
       {
         id: "noe-valley-bakery",
@@ -106,6 +112,8 @@ export const tasks: Task[] = [
         distance: "2.2 mi",
         price: "$62 · 6 in",
         lead: "72h notice",
+        website: { label: "noevalleybakery.com", href: "https://www.noevalleybakery.com" },
+        phone: "+1 415 550 1405",
       },
     ],
     steps: [
@@ -174,6 +182,8 @@ export const tasks: Task[] = [
         photos: [dental],
         tags: ["Insurance", "Emergency"],
         distance: "2.4 mi",
+        website: { label: "glenparkdental.com", href: "https://www.glenparkdental.com" },
+        phone: "+1 415 585 1500",
       },
     ],
     steps: [

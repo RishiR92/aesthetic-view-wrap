@@ -38,6 +38,7 @@ function TaskOptions() {
 
   const [hero, ...rest] = task.options;
   const visible = expanded ? rest : rest.slice(0, 2);
+  const selectedPlace = task.options.find((p) => p.id === selected);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -123,7 +124,7 @@ function TaskOptions() {
           )}
         >
           <Phone className="size-4" strokeWidth={2.5} />
-          {selected ? "Asmi will call now" : "Pick one option to call"}
+          {selectedPlace ? `Asmi will call ${selectedPlace.name}` : "Pick one option to call"}
         </button>
       </div>
     </div>

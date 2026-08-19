@@ -1,6 +1,7 @@
 import { Check, Star } from "lucide-react";
 import type { Place } from "@/lib/mock-tasks";
 import { PhotoCarousel } from "@/components/photo-carousel";
+import { PlaceActions } from "@/components/place-actions";
 import { cn } from "@/lib/utils";
 
 export function PlaceRow({
@@ -25,20 +26,32 @@ export function PlaceRow({
       }}
       aria-pressed={selected}
       className={cn(
-        "flex w-full items-stretch gap-3 overflow-hidden rounded-3xl bg-panel p-3 text-left transition-transform active:scale-[0.99]",
+        "relative flex w-full items-stretch gap-3 overflow-hidden rounded-3xl bg-panel p-3 text-left transition-all duration-150 active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         selected && "ring-2 ring-primary",
       )}
     >
+      {selected ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-3xl bg-primary/[0.06]"
+        />
+      ) : null}
+
       <span className="flex min-w-0 flex-1 flex-col justify-center py-1">
         <span className="flex items-center gap-2">
           <span className="truncate text-[15px] font-bold leading-tight text-panel-foreground">
             {place.name}
           </span>
-          {selected ? (
-            <span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-              <Check className="size-3" strokeWidth={3} />
-            </span>
-          ) : null}
+          <span
+            className={cn(
+              "grid size-5 shrink-0 place-items-center rounded-full transition-colors",
+              selected
+                ? "bg-primary text-primary-foreground"
+                : "border border-panel-foreground/25 text-transparent",
+            )}
+          >
+            <Check className="size-3" strokeWidth={3} />
+          </span>
         </span>
         <span className="mt-1 flex items-center gap-1.5 text-[12.5px] font-semibold text-panel-foreground">
           <Star className="size-3.5 fill-current text-primary" strokeWidth={0} />
@@ -74,6 +87,7 @@ export function PlaceRow({
             </span>
           ))}
         </span>
+        <PlaceActions place={place} />
       </span>
 
       <span className="w-[112px] shrink-0 overflow-hidden rounded-2xl">
