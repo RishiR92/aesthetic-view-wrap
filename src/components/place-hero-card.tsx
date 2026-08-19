@@ -1,6 +1,7 @@
 import { Check, Star } from "lucide-react";
 import type { Place } from "@/lib/mock-tasks";
 import { PhotoCarousel } from "@/components/photo-carousel";
+import { PlaceActions } from "@/components/place-actions";
 import { cn } from "@/lib/utils";
 
 export function PlaceHeroCard({
@@ -13,12 +14,19 @@ export function PlaceHeroCard({
   onSelect: () => void;
 }) {
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
       aria-pressed={selected}
       className={cn(
-        "block w-full overflow-hidden rounded-3xl bg-cream text-left transition-transform active:scale-[0.99]",
+        "relative block w-full overflow-hidden rounded-3xl bg-cream text-left transition-all duration-150 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
       )}
     >
@@ -28,14 +36,19 @@ export function PlaceHeroCard({
         <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary-foreground">
           ✦ Asmi pick
         </span>
-        {selected ? (
-          <span className="absolute right-4 top-4 grid size-7 place-items-center rounded-full bg-primary text-primary-foreground">
-            <Check className="size-4" strokeWidth={3} />
-          </span>
-        ) : null}
+        <span
+          className={cn(
+            "absolute right-4 top-4 grid size-7 place-items-center rounded-full transition-colors",
+            selected
+              ? "bg-primary text-primary-foreground"
+              : "border border-panel/70 bg-foreground/20 text-transparent backdrop-blur",
+          )}
+        >
+          <Check className="size-4" strokeWidth={3} />
+        </span>
       </div>
 
-      <div className="p-4">
+      <div className={cn("relative p-4", selected && "bg-primary/[0.06]")}>
         <h3 className="text-[18px] font-bold leading-tight text-cream-foreground">{place.name}</h3>
         <p className="mt-1 text-[13px] leading-snug text-cream-foreground/60">
           {place.address} · {place.hours}
@@ -66,7 +79,8 @@ export function PlaceHeroCard({
             </span>
           ))}
         </div>
+        <PlaceActions place={place} tone="cream" />
       </div>
-    </button>
+    </div>
   );
 }
