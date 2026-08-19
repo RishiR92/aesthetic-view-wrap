@@ -64,8 +64,8 @@ export const tasks: Task[] = [
     asmiAction: "",
     plan:
       'Asmi will call b. Patisserie to lock the heart mould, mango mousse and "Love you Danny 💜" piping for Saturday pickup.',
-    status: "in-motion",
-    liveLine: "Order confirmed",
+    status: "needs-you",
+    liveLine: "3 patisseries found",
     ago: "4m ago",
     options: [
       {
