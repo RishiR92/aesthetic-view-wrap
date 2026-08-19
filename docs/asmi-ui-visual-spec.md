@@ -63,9 +63,9 @@ Flow is out of scope. This is the pure look-and-feel contract.
 
 - Radius scale: pills (`rounded-full`) for chips/badges/dots · `rounded-2xl` (~18px) for task cards, inline expanders, thumbnails · `rounded-3xl` (~22px) for all major content cards · `rounded-xl` for small photo tiles.
 - Desktop shell: 420 × 860px frame, `28px` radius (`rounded-shell`), 1px `border-border/60`, shadow `0 40px 100px -20px oklch(0.15 0.03 305/70%)`.
-- No shadows on inner cards — depth comes from surface color + blur, not drop shadows.
+- No shadows on inner cards, with one exception: `--shadow-lift` (`0 18px 40px -16px oklch(0.15 0.03 305/55%)`) on a *selected* option card.
 - Translucent cards must pair `bg-raised` with `backdrop-blur-md`.
-- Selection: `ring-2 ring-primary` (hero adds `ring-offset-2 ring-offset-background`) plus a `size-5`–`size-7` amber check disc.
+- Selection (options screen): the picked card lifts — `scale-[1.02]`, `--shadow-lift`, `ring-1 ring-primary`, and a 3px amber bar on its left edge. Unpicked siblings recede to `scale-[0.99] opacity-[0.72]`. Transition 200ms `cubic-bezier(0.22,1,0.36,1)`. No check disc or radio circle.
 - Press feedback: `active:scale-[0.985]`–`[0.99]`, no hover-lift on mobile surfaces.
 
 ---
@@ -106,8 +106,8 @@ Flow is out of scope. This is the pure look-and-feel contract.
 - **TopBar** — 24px italic display wordmark or "‹ Back" in muted, 20px menu icon right; `px-6 pt-6 pb-3`.
 - **SectionHeader** — amber uppercase label + `bg-secondary` pill chip.
 - **LiveTaskCard** — `rounded-2xl bg-raised backdrop-blur-md border-border/60 px-4 py-3.5`; 32px `bg-cta/15` disc with a 10px orange dot and pulse ring; 15px title; 14px amber live line with blinking dots; right side 11px timestamp + chevron.
-- **PlaceHeroCard** — `rounded-3xl bg-cream`, 16:9 carousel, amber "✦ ASMI PICK" pill top-left, check disc top-right when selected, `p-4` details, amber star + rating, quote line with `border-l-2 border-primary pl-3`, outlined tag pills.
-- **PlaceRow** — `rounded-3xl bg-panel p-3`, text column left, `112px` `rounded-2xl` 3:4 carousel right; amber `bg-primary/15` confirmation chip + max 2 outlined tags.
+- **PlaceHeroCard** — `rounded-3xl bg-cream`, 16:9 carousel, amber "✦ ASMI PICK" pill top-left, `p-4` details, amber star + rating, quote line with `border-l-2 border-primary pl-3`, outlined tag pills; inline underlined `Website ↗` link at the end of the address/hours line.
+- **PlaceRow** — `rounded-3xl bg-panel p-3`, text column left, `112px` `rounded-2xl` 3:4 carousel right; amber `bg-primary/15` confirmation chip + max 2 outlined tags; inline underlined `Website ↗` link closing the hours line (stops click propagation so it never changes the selection).
 - **Execution status bar** — four equal segments Call · Retry · Message · Email; done = amber fill + check, skipped = `bg-secondary` hairline, pending = outline only.
 - **Timeline** — 64px `tabular-nums` time gutter, hairline `border-b border-cream-foreground/8` per row, amber dot for completed nodes.
 - **Recording / Message trail** — `rounded-2xl border border-cream-foreground/12` collapsibles; recording uses a 32px orange play disc and `bg-cta/70` waveform bars; message bubbles are `rounded-2xl`, Asmi in amber-tinted fill, the other party in `cream-foreground/8`.
