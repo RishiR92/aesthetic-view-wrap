@@ -10,10 +10,10 @@ export function TopBar({
   title,
   reminderCount,
 }: {
-  back?: boolean;
-  backTo?: string;
-  title?: string;
-  reminderCount?: number;
+  back?: boolean | undefined;
+  backTo?: string | undefined;
+  title?: string | undefined;
+  reminderCount?: number | undefined;
 }) {
   const [open, setOpen] = useState(false);
 

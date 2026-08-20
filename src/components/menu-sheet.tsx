@@ -15,7 +15,7 @@ export function MenuSheet({
 }: {
   open: boolean;
   onClose: () => void;
-  reminderCount?: number;
+  reminderCount?: number | undefined;
 }) {
   if (!open) return null;
 

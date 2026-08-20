@@ -24,7 +24,11 @@ const REPEATS: Repeat[] = ["none", "daily", "weekdays", "weekly", "monthly", "cu
 const QUICK_TIMES = ["08:00", "09:00", "12:00", "18:00", "21:00"];
 const DAY_ORDER: DayOfWeek[] = [0, 1, 2, 3, 4, 5, 6];
 
-export type ReminderDraft = Omit<Reminder, "id">;
+export type ReminderDraft = Omit<Reminder, "id" | "customDays" | "note" | "skipped"> & {
+  customDays?: DayOfWeek[] | undefined;
+  note?: string | undefined;
+  skipped?: string[] | undefined;
+};
 
 function emptyDraft(prefill?: string): ReminderDraft {
   const now = new Date();
@@ -59,11 +63,11 @@ export function ReminderSheet({
 }: {
   open: boolean;
   /** editing an existing reminder, or undefined to create a new one */
-  reminder?: Reminder;
-  prefill?: string;
+  reminder?: Reminder | undefined;
+  prefill?: string | undefined;
   onClose: () => void;
   onSave: (draft: ReminderDraft) => void;
-  onDelete?: (reminder: Reminder) => void;
+  onDelete?: ((reminder: Reminder) => void) | undefined;
 }) {
   const [draft, setDraft] = useState<ReminderDraft>(() => emptyDraft(prefill));
   const [quickText, setQuickText] = useState("");
@@ -362,8 +366,8 @@ function Chip({
   onClick,
   children,
 }: {
-  active?: boolean;
-  onClick?: () => void;
+  active?: boolean | undefined;
+  onClick?: (() => void) | undefined;
   children: React.ReactNode;
 }) {
   return (

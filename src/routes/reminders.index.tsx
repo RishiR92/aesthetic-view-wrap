@@ -18,12 +18,12 @@ import {
   type Reminder,
 } from "@/lib/reminders";
 
-type Search = { new?: string; id?: string };
+type Search = { new?: string | undefined; id?: string | undefined };
 
 export const Route = createFileRoute("/reminders/")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    new: typeof search.new === "string" ? search.new : undefined,
-    id: typeof search.id === "string" ? search.id : undefined,
+    new: typeof search["new"] === "string" ? (search["new"] as string) : undefined,
+    id: typeof search["id"] === "string" ? (search["id"] as string) : undefined,
   }),
   head: () => ({
     meta: [
