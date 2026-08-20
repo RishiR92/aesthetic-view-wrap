@@ -63,6 +63,9 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-aurora-violet: var(--aurora-violet);
   --color-aurora-amber: var(--aurora-amber);
+  --color-accent-violet: var(--accent-violet);
+  --color-accent-violet-foreground: var(--accent-violet-foreground);
+  --color-accent-rose: var(--accent-rose);
   --color-tabbar: var(--tabbar);
   --color-tabbar-foreground: var(--tabbar-foreground);
   --color-panel: var(--panel);
