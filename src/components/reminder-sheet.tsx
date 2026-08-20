@@ -124,44 +124,34 @@ export function ReminderSheet({
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               {draft.repeat === "none" ? "Date" : "Starting"}
             </span>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mt-2 grid grid-cols-2 gap-2">
               {dateChips.map((chip) => (
                 <Chip key={chip.value} active={draft.date === chip.value} onClick={() => set("date", chip.value)}>
                   {chip.label}
                 </Chip>
               ))}
-              <label className="relative inline-flex">
-                <Chip active={!dateChips.some((c) => c.value === draft.date)}>
-                  {dateChips.some((c) => c.value === draft.date)
-                    ? "Other date"
-                    : formatDayLabel(parseDateKey(draft.date))}
-                </Chip>
-                <input
-                  type="date"
-                  value={draft.date}
-                  onChange={(e) => e.target.value && set("date", e.target.value)}
-                  aria-label="Pick a date"
-                  className="absolute inset-0 cursor-pointer opacity-0"
-                />
-              </label>
             </div>
+            <PickerField
+              icon={<CalendarDays className="size-[18px]" strokeWidth={1.9} />}
+              label="Pick a date"
+              display={formatDayLabel(parseDateKey(draft.date))}
+              type="date"
+              value={draft.date}
+              onChange={(v) => set("date", v)}
+            />
           </div>
 
           {/* time */}
           <div>
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">Time</span>
-            <label className="relative mt-2 flex items-center gap-3 rounded-2xl border border-border/70 bg-secondary/40 px-4 py-3.5 transition-colors focus-within:border-primary">
-              <Clock className="size-4 shrink-0 text-muted-foreground" strokeWidth={1.9} />
-              <span className="flex-1 text-[17px] font-semibold text-foreground">{label12(draft.time)}</span>
-              <span className="text-[12px] font-medium text-muted-foreground">Tap to change</span>
-              <input
-                type="time"
-                value={draft.time}
-                onChange={(e) => e.target.value && set("time", e.target.value)}
-                aria-label="Pick a time"
-                className="absolute inset-0 cursor-pointer opacity-0"
-              />
-            </label>
+            <PickerField
+              icon={<Clock className="size-[18px]" strokeWidth={1.9} />}
+              label="Pick a time"
+              display={label12(draft.time)}
+              type="time"
+              value={draft.time}
+              onChange={(v) => set("time", v)}
+            />
           </div>
 
           {/* repeat */}
