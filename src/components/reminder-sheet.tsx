@@ -26,6 +26,11 @@ import { Switch } from "@/components/ui/switch";
 
 const REPEATS: Repeat[] = ["none", "daily", "weekdays", "weekly", "monthly", "custom"];
 const DAY_ORDER: DayOfWeek[] = [0, 1, 2, 3, 4, 5, 6];
+const TIME_PRESETS = [
+  { label: "Morning", value: "09:00" },
+  { label: "Evening", value: "18:00" },
+  { label: "Night", value: "21:00" },
+];
 
 export type ReminderDraft = Omit<Reminder, "id">;
 
@@ -56,10 +61,12 @@ export function ReminderSheet({
   onDelete?: ((reminder: Reminder) => void) | undefined;
 }) {
   const [draft, setDraft] = useState<ReminderDraft>(() => emptyDraft());
+  const [openPicker, setOpenPicker] = useState<"date" | "time" | null>(null);
 
   useEffect(() => {
     if (!open) return;
     setDraft(reminder ? { ...reminder } : emptyDraft());
+    setOpenPicker(null);
   }, [open, reminder]);
 
   const set = <K extends keyof ReminderDraft>(key: K, value: ReminderDraft[K]) =>
@@ -77,9 +84,11 @@ export function ReminderSheet({
 
   if (!open) return null;
 
+  const dayAfter = addDays(new Date(), 2);
   const dateChips: { label: string; value: string }[] = [
     { label: "Today", value: toDateKey(new Date()) },
     { label: "Tomorrow", value: toDateKey(addDays(new Date(), 1)) },
+    { label: dayAfter.toLocaleDateString("en-US", { weekday: "short" }), value: toDateKey(dayAfter) },
   ];
 
   return (
