@@ -124,7 +124,7 @@ function Index() {
           </>
         ) : null}
 
-        <SectionHeader label="Asmi can also" />
+        {upNext ? <SectionHeader label="Next reminder" /> : null}
         {upNext ? (
           <Link
             to="/reminders"
@@ -144,6 +144,8 @@ function Index() {
             <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
           </Link>
         ) : null}
+
+        <SectionHeader label="Asmi can also" />
         <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5">
           {chips.map((chip) => (
             <button
