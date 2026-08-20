@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as RemindersIndexRouteImport } from './routes/reminders.index'
 import { Route as TaskTaskIdIndexRouteImport } from './routes/task.$taskId.index'
 import { Route as TaskTaskIdStatusRouteImport } from './routes/task.$taskId.status'
@@ -17,6 +19,16 @@ import { Route as TaskTaskIdStatusRouteImport } from './routes/task.$taskId.stat
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentsRoute = PaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RemindersIndexRoute = RemindersIndexRouteImport.update({
@@ -37,12 +49,16 @@ const TaskTaskIdStatusRoute = TaskTaskIdStatusRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/history': typeof HistoryRoute
+  '/payments': typeof PaymentsRoute
   '/reminders/': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId/': typeof TaskTaskIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/history': typeof HistoryRoute
+  '/payments': typeof PaymentsRoute
   '/reminders': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId': typeof TaskTaskIdIndexRoute
@@ -50,21 +66,43 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/history': typeof HistoryRoute
+  '/payments': typeof PaymentsRoute
   '/reminders/': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId/': typeof TaskTaskIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/reminders/' | '/task/$taskId/status' | '/task/$taskId/'
+  fullPaths:
+    | '/'
+    | '/history'
+    | '/payments'
+    | '/reminders/'
+    | '/task/$taskId/status'
+    | '/task/$taskId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/reminders' | '/task/$taskId/status' | '/task/$taskId'
+  to:
+    | '/'
+    | '/history'
+    | '/payments'
+    | '/reminders'
+    | '/task/$taskId/status'
+    | '/task/$taskId'
   id:
-    '__root__' | '/' | '/reminders/' | '/task/$taskId/status' | '/task/$taskId/'
+    | '__root__'
+    | '/'
+    | '/history'
+    | '/payments'
+    | '/reminders/'
+    | '/task/$taskId/status'
+    | '/task/$taskId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HistoryRoute: typeof HistoryRoute
+  PaymentsRoute: typeof PaymentsRoute
   RemindersIndexRoute: typeof RemindersIndexRoute
   TaskTaskIdStatusRoute: typeof TaskTaskIdStatusRoute
   TaskTaskIdIndexRoute: typeof TaskTaskIdIndexRoute
@@ -77,6 +115,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payments': {
+      id: '/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof PaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reminders/': {
@@ -105,6 +157,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HistoryRoute: HistoryRoute,
+  PaymentsRoute: PaymentsRoute,
   RemindersIndexRoute: RemindersIndexRoute,
   TaskTaskIdStatusRoute: TaskTaskIdStatusRoute,
   TaskTaskIdIndexRoute: TaskTaskIdIndexRoute,
