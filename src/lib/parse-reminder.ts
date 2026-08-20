@@ -2,11 +2,11 @@ import { addDays, toDateKey, type Channel, type DayOfWeek, type Repeat } from ".
 
 export type ParsedReminder = {
   title: string;
-  date?: string;
-  time?: string;
-  repeat?: Repeat;
-  customDays?: DayOfWeek[];
-  channel?: Channel;
+  date?: string | undefined;
+  time?: string | undefined;
+  repeat?: Repeat | undefined;
+  customDays?: DayOfWeek[] | undefined;
+  channel?: Channel | undefined;
 };
 
 const DAYS: Record<string, DayOfWeek> = {

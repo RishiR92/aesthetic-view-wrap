@@ -12,11 +12,11 @@ export type Reminder = {
   time: string;
   channel: Channel;
   repeat: Repeat;
-  customDays?: DayOfWeek[];
+  customDays?: DayOfWeek[] | undefined;
   status: Status;
-  note?: string;
+  note?: string | undefined;
   /** date keys the user skipped once */
-  skipped?: string[];
+  skipped?: string[] | undefined;
 };
 
 export type HistoryEntry = {
@@ -116,7 +116,7 @@ function matchesRepeat(candidate: Date, start: Date, r: Repeat, days: DayOfWeek[
   }
 }
 
-type Schedule = Pick<Reminder, "date" | "time" | "repeat" | "customDays"> & { skipped?: string[] };
+type Schedule = Pick<Reminder, "date" | "time" | "repeat" | "customDays"> & { skipped?: string[] | undefined };
 
 export function nextOccurrences(reminder: Schedule, count = 3, from: Date = new Date()): Date[] {
   const start = combine(reminder.date, reminder.time);

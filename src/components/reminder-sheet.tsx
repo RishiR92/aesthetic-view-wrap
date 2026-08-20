@@ -24,11 +24,7 @@ const REPEATS: Repeat[] = ["none", "daily", "weekdays", "weekly", "monthly", "cu
 const QUICK_TIMES = ["08:00", "09:00", "12:00", "18:00", "21:00"];
 const DAY_ORDER: DayOfWeek[] = [0, 1, 2, 3, 4, 5, 6];
 
-export type ReminderDraft = Omit<Reminder, "id" | "customDays" | "note" | "skipped"> & {
-  customDays?: DayOfWeek[] | undefined;
-  note?: string | undefined;
-  skipped?: string[] | undefined;
-};
+export type ReminderDraft = Omit<Reminder, "id">;
 
 function emptyDraft(prefill?: string): ReminderDraft {
   const now = new Date();
