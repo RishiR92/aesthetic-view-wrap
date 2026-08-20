@@ -11,7 +11,7 @@ export function LiveTaskCard({ task }: { task: Task }) {
     >
       <div className="flex items-start gap-3">
         <span className="mt-1 grid size-8 shrink-0 place-items-center rounded-full bg-primary/15 text-primary/40 pulse-ring">
-          <span className="size-2.5 rounded-full primary" />
+          <span className="size-2.5 rounded-full bg-primary" />
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-semibold text-foreground">{task.title}</p>

@@ -35,7 +35,7 @@ export function ChannelSpine({ steps }: { steps: ChannelStep[] }) {
                   step.state === "done" && "bg-cream-foreground/25 text-cream-foreground",
                   step.state === "skipped" &&
                     "border border-dashed border-cream-foreground/35 text-cream-foreground/45",
-                  step.state === "active" && "bg-cta text-cta-foreground pulse-ring",
+                  step.state === "active" && "bg-cream-foreground text-cream pulse-ring",
                   step.state === "next" &&
                     "border border-cream-foreground/25 text-cream-foreground/55",
                 )}
@@ -45,7 +45,7 @@ export function ChannelSpine({ steps }: { steps: ChannelStep[] }) {
               <span
                 className={cn(
                   "text-[13px] font-semibold",
-                  step.state === "active" ? "text-cta" : "text-cream-foreground/75",
+                  step.state === "active" ? "text-cream-foreground" : "text-cream-foreground/75",
                   step.state === "skipped" && "text-cream-foreground/45",
                 )}
               >
