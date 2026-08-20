@@ -173,7 +173,7 @@ function RemindersPage() {
 
         {reminders.length === 0 ? (
           <p className="mt-8 text-center text-[14px] text-muted-foreground">
-            No reminders yet. Tap “New reminder” to add your first.
+            No reminders yet. Tap above to add your first.
           </p>
         ) : null}
       </div>
