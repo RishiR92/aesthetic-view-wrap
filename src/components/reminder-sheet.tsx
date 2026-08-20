@@ -1,7 +1,6 @@
-import { Bell, Check, MessageSquare, Phone, Sparkles, Trash2, X } from "lucide-react";
+import { Bell, Calendar, Check, Clock, MessageSquare, Phone, Trash2, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { parseReminderText } from "@/lib/parse-reminder";
 import {
   DAY_LETTERS,
   REPEAT_LABELS,
@@ -21,14 +20,13 @@ import {
 import { Switch } from "@/components/ui/switch";
 
 const REPEATS: Repeat[] = ["none", "daily", "weekdays", "weekly", "monthly", "custom"];
-const QUICK_TIMES = ["08:00", "09:00", "12:00", "18:00", "21:00"];
 const DAY_ORDER: DayOfWeek[] = [0, 1, 2, 3, 4, 5, 6];
 
 export type ReminderDraft = Omit<Reminder, "id">;
 
-function emptyDraft(prefill?: string): ReminderDraft {
+function emptyDraft(): ReminderDraft {
   const now = new Date();
-  const base: ReminderDraft = {
+  return {
     title: "",
     date: toDateKey(now),
     time: "09:00",
@@ -36,23 +34,11 @@ function emptyDraft(prefill?: string): ReminderDraft {
     repeat: "none",
     status: "active",
   };
-  if (!prefill) return base;
-  const parsed = parseReminderText(prefill, now);
-  return {
-    ...base,
-    title: parsed.title,
-    date: parsed.date ?? base.date,
-    time: parsed.time ?? base.time,
-    repeat: parsed.repeat ?? base.repeat,
-    customDays: parsed.customDays,
-    channel: parsed.channel ?? base.channel,
-  };
 }
 
 export function ReminderSheet({
   open,
   reminder,
-  prefill,
   onClose,
   onSave,
   onDelete,
@@ -60,41 +46,22 @@ export function ReminderSheet({
   open: boolean;
   /** editing an existing reminder, or undefined to create a new one */
   reminder?: Reminder | undefined;
-  prefill?: string | undefined;
   onClose: () => void;
   onSave: (draft: ReminderDraft) => void;
   onDelete?: ((reminder: Reminder) => void) | undefined;
 }) {
-  const [draft, setDraft] = useState<ReminderDraft>(() => emptyDraft(prefill));
-  const [quickText, setQuickText] = useState("");
+  const [draft, setDraft] = useState<ReminderDraft>(() => emptyDraft());
 
   useEffect(() => {
     if (!open) return;
-    setQuickText("");
-    setDraft(reminder ? { ...reminder } : emptyDraft(prefill));
-  }, [open, reminder, prefill]);
+    setDraft(reminder ? { ...reminder } : emptyDraft());
+  }, [open, reminder]);
 
   const set = <K extends keyof ReminderDraft>(key: K, value: ReminderDraft[K]) =>
     setDraft((d) => ({ ...d, [key]: value }));
 
   const next = useMemo(() => (open ? nextOccurrence(draft) : null), [draft, open]);
   const canSave = draft.title.trim().length > 0 && (draft.repeat !== "custom" || (draft.customDays?.length ?? 0) > 0);
-
-  const applyQuickText = () => {
-    const text = quickText.trim();
-    if (!text) return;
-    const parsed = parseReminderText(text);
-    setDraft((d) => ({
-      ...d,
-      title: parsed.title || d.title,
-      date: parsed.date ?? d.date,
-      time: parsed.time ?? d.time,
-      repeat: parsed.repeat ?? d.repeat,
-      customDays: parsed.customDays ?? d.customDays,
-      channel: parsed.channel ?? d.channel,
-    }));
-    setQuickText("");
-  };
 
   const toggleDay = (day: DayOfWeek) => {
     const days = draft.customDays ?? [];
@@ -138,37 +105,6 @@ export function ReminderSheet({
         </div>
 
         <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-5 pb-4">
-          {/* natural language */}
-          <div className="rounded-2xl border border-border/70 bg-secondary/50 p-3">
-            <label htmlFor="quick" className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground">
-              <Sparkles className="size-3.5 text-primary" strokeWidth={2} />
-              Type it how you'd say it
-            </label>
-            <div className="mt-2 flex gap-2">
-              <input
-                id="quick"
-                value={quickText}
-                onChange={(e) => setQuickText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    applyQuickText();
-                  }
-                }}
-                placeholder="call mom every Sunday 6pm"
-                className="min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground/70"
-              />
-              <button
-                type="button"
-                onClick={applyQuickText}
-                disabled={!quickText.trim()}
-                className="shrink-0 rounded-full bg-primary/20 px-3 py-1.5 text-[12px] font-semibold text-primary disabled:opacity-40"
-              >
-                Fill
-              </button>
-            </div>
-          </div>
-
           {/* title */}
           <div>
             <label htmlFor="title" className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
@@ -215,25 +151,18 @@ export function ReminderSheet({
           {/* time */}
           <div>
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">Time</span>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {QUICK_TIMES.map((t) => (
-                <Chip key={t} active={draft.time === t} onClick={() => set("time", t)}>
-                  {label12(t)}
-                </Chip>
-              ))}
-              <label className="relative inline-flex">
-                <Chip active={!QUICK_TIMES.includes(draft.time)}>
-                  {QUICK_TIMES.includes(draft.time) ? "Other time" : label12(draft.time)}
-                </Chip>
-                <input
-                  type="time"
-                  value={draft.time}
-                  onChange={(e) => e.target.value && set("time", e.target.value)}
-                  aria-label="Pick a time"
-                  className="absolute inset-0 cursor-pointer opacity-0"
-                />
-              </label>
-            </div>
+            <label className="relative mt-2 flex items-center gap-3 rounded-2xl border border-border/70 bg-secondary/40 px-4 py-3.5 transition-colors focus-within:border-primary">
+              <Clock className="size-4 shrink-0 text-muted-foreground" strokeWidth={1.9} />
+              <span className="flex-1 text-[17px] font-semibold text-foreground">{label12(draft.time)}</span>
+              <span className="text-[12px] font-medium text-muted-foreground">Tap to change</span>
+              <input
+                type="time"
+                value={draft.time}
+                onChange={(e) => e.target.value && set("time", e.target.value)}
+                aria-label="Pick a time"
+                className="absolute inset-0 cursor-pointer opacity-0"
+              />
+            </label>
           </div>
 
           {/* repeat */}
