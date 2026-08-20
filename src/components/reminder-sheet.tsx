@@ -345,59 +345,230 @@ function Chip({
   );
 }
 
-function PickerField({
+function FieldRow({
   icon,
   label,
   display,
-  type,
-  value,
-  onChange,
+  expanded,
+  onClick,
 }: {
   icon: React.ReactNode;
   label: string;
   display: string;
-  type: "date" | "time";
-  value: string;
-  onChange: (value: string) => void;
+  expanded: boolean;
+  onClick: () => void;
 }) {
-  const ref = useRef<HTMLInputElement>(null);
-
-  const open = () => {
-    const el = ref.current;
-    if (!el) return;
-    el.focus();
-    const withPicker = el as HTMLInputElement & { showPicker?: () => void };
-    try {
-      withPicker.showPicker?.();
-    } catch {
-      el.click();
-    }
-  };
-
   return (
     <button
       type="button"
-      onClick={open}
-      className="relative mt-2 flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-border/70 bg-secondary/40 px-4 py-4 text-left transition-colors active:bg-secondary/70"
+      onClick={onClick}
+      aria-expanded={expanded}
+      className={`mt-2 flex w-full items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition-colors ${
+        expanded ? "border-primary/70 bg-primary/12" : "border-border/70 bg-secondary/40 active:bg-secondary/70"
+      }`}
     >
-      <span className="text-muted-foreground">{icon}</span>
+      <span className={expanded ? "text-primary" : "text-muted-foreground"}>{icon}</span>
       <span className="min-w-0 flex-1">
         <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
           {label}
         </span>
         <span className="mt-0.5 block truncate text-[17px] font-semibold text-foreground">{display}</span>
       </span>
-      <ChevronRight className="size-4 shrink-0 text-muted-foreground" strokeWidth={2} />
-      <input
-        ref={ref}
-        type={type}
-        value={value}
-        onChange={(e) => e.target.value && onChange(e.target.value)}
-        aria-label={label}
-        className="pointer-events-none absolute inset-0 h-full w-full opacity-0"
-        tabIndex={-1}
+      <ChevronRight
+        className={`size-4 shrink-0 transition-transform ${expanded ? "rotate-90 text-primary" : "text-muted-foreground"}`}
+        strokeWidth={2}
       />
     </button>
+  );
+}
+
+const WEEKDAY_HEAD = ["S", "M", "T", "W", "T", "F", "S"];
+
+function MonthCalendar({ value, onSelect }: { value: string; onSelect: (dateKey: string) => void }) {
+  const selected = parseDateKey(value);
+  const [cursor, setCursor] = useState(() => new Date(selected.getFullYear(), selected.getMonth(), 1));
+
+  const today = new Date();
+  const todayKey = toDateKey(today);
+  const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
+  const daysInMonth = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
+  const cells: (Date | null)[] = [
+    ...Array.from({ length: first.getDay() }, () => null),
+    ...Array.from({ length: daysInMonth }, (_, i) => new Date(cursor.getFullYear(), cursor.getMonth(), i + 1)),
+  ];
+
+  const shift = (delta: number) => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + delta, 1));
+
+  return (
+    <div className="pointer-events-auto mt-2 rounded-2xl border border-border/60 bg-secondary/30 p-3">
+      <div className="flex items-center justify-between px-1">
+        <button
+          type="button"
+          onClick={() => shift(-1)}
+          aria-label="Previous month"
+          className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground"
+        >
+          <ChevronLeft className="size-4" strokeWidth={2} />
+        </button>
+        <span className="text-[14px] font-semibold text-foreground">
+          {cursor.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+        </span>
+        <button
+          type="button"
+          onClick={() => shift(1)}
+          aria-label="Next month"
+          className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground"
+        >
+          <ChevronRight className="size-4" strokeWidth={2} />
+        </button>
+      </div>
+
+      <div className="mt-2 grid grid-cols-7 gap-y-1">
+        {WEEKDAY_HEAD.map((d, i) => (
+          <span key={i} className="text-center text-[11px] font-bold uppercase text-muted-foreground/70">
+            {d}
+          </span>
+        ))}
+        {cells.map((date, i) => {
+          if (!date) return <span key={`e${i}`} />;
+          const key = toDateKey(date);
+          const isSelected = key === value;
+          const isToday = key === todayKey;
+          const isPast = key < todayKey;
+          return (
+            <button
+              key={key}
+              type="button"
+              disabled={isPast}
+              onClick={() => onSelect(key)}
+              aria-pressed={isSelected}
+              className={`relative mx-auto grid size-10 place-items-center rounded-full text-[14px] font-semibold transition-colors ${
+                isSelected
+                  ? "bg-primary text-primary-foreground"
+                  : isPast
+                    ? "text-muted-foreground/35"
+                    : "text-foreground hover:bg-secondary/70"
+              }`}
+            >
+              {date.getDate()}
+              {isToday && !isSelected ? (
+                <span className="absolute bottom-1.5 size-1 rounded-full bg-primary" />
+              ) : null}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+const ITEM_H = 44;
+const HOURS = Array.from({ length: 12 }, (_, i) => i + 1);
+const MINUTES = Array.from({ length: 12 }, (_, i) => i * 5);
+const MERIDIEMS = ["AM", "PM"];
+
+function TimeWheel({ value, onChange }: { value: string; onChange: (time: string) => void }) {
+  const [h24, minute] = value.split(":").map(Number);
+  const hour24 = h24 ?? 9;
+  const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+  const meridiem = hour24 >= 12 ? "PM" : "AM";
+  const nearestMinute = MINUTES.reduce(
+    (best, m) => (Math.abs(m - (minute ?? 0)) < Math.abs(best - (minute ?? 0)) ? m : best),
+    0,
+  );
+
+  const emit = (nextHour12: number, nextMinute: number, nextMeridiem: string) => {
+    const h = nextMeridiem === "PM" ? (nextHour12 % 12) + 12 : nextHour12 % 12;
+    onChange(`${String(h).padStart(2, "0")}:${String(nextMinute).padStart(2, "0")}`);
+  };
+
+  return (
+    <div className="relative mt-2 overflow-hidden rounded-2xl border border-border/60 bg-secondary/30">
+      <div className="pointer-events-none absolute inset-x-3 top-1/2 h-11 -translate-y-1/2 rounded-xl bg-primary/18 ring-1 ring-primary/40" />
+      <div className="relative flex justify-center gap-2 px-3">
+        <Wheel
+          items={HOURS.map((h) => ({ value: String(h), label: String(h) }))}
+          selected={String(hour12)}
+          onSelect={(v) => emit(Number(v), nearestMinute, meridiem)}
+          ariaLabel="Hour"
+        />
+        <span className="self-center text-[18px] font-semibold text-muted-foreground">:</span>
+        <Wheel
+          items={MINUTES.map((m) => ({ value: String(m), label: String(m).padStart(2, "0") }))}
+          selected={String(nearestMinute)}
+          onSelect={(v) => emit(hour12, Number(v), meridiem)}
+          ariaLabel="Minute"
+        />
+        <Wheel
+          items={MERIDIEMS.map((m) => ({ value: m, label: m }))}
+          selected={meridiem}
+          onSelect={(v) => emit(hour12, nearestMinute, v)}
+          ariaLabel="AM or PM"
+        />
+      </div>
+    </div>
+  );
+}
+
+function Wheel({
+  items,
+  selected,
+  onSelect,
+  ariaLabel,
+}: {
+  items: { value: string; label: string }[];
+  selected: string;
+  onSelect: (value: string) => void;
+  ariaLabel: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const frame = useRef<number | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const index = Math.max(items.findIndex((i) => i.value === selected), 0);
+    el.scrollTop = index * ITEM_H;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleScroll = () => {
+    const el = ref.current;
+    if (!el) return;
+    if (frame.current) window.clearTimeout(frame.current);
+    frame.current = window.setTimeout(() => {
+      const index = Math.min(items.length - 1, Math.max(0, Math.round(el.scrollTop / ITEM_H)));
+      const item = items[index];
+      if (item && item.value !== selected) onSelect(item.value);
+    }, 90);
+  };
+
+  return (
+    <div
+      ref={ref}
+      role="listbox"
+      aria-label={ariaLabel}
+      onScroll={handleScroll}
+      className="h-[176px] w-14 snap-y snap-mandatory overflow-y-auto scroll-smooth py-[66px] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {items.map((item) => {
+        const active = item.value === selected;
+        return (
+          <button
+            key={item.value}
+            type="button"
+            role="option"
+            aria-selected={active}
+            onClick={() => onSelect(item.value)}
+            className={`flex h-11 w-full snap-center items-center justify-center text-[19px] tabular-nums transition-all ${
+              active ? "font-bold text-foreground" : "font-medium text-muted-foreground/60"
+            }`}
+          >
+            {item.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
