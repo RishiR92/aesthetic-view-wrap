@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { MobileShell } from "../components/mobile-shell";
+import { RemindersProvider } from "../lib/reminders-store";
+import { Toaster } from "../components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -132,9 +134,12 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <MobileShell>
-        <Outlet />
-      </MobileShell>
+      <RemindersProvider>
+        <MobileShell>
+          <Outlet />
+        </MobileShell>
+        <Toaster position="top-center" />
+      </RemindersProvider>
     </QueryClientProvider>
   );
 }

@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronRight, Clock, CreditCard, Home, Star } from "lucide-react";
+import { Bell, ChevronRight, Star } from "lucide-react";
 
 import { tasks } from "@/lib/mock-tasks";
 import { TopBar } from "@/components/top-bar";
 import { SectionHeader } from "@/components/section-header";
 import { LiveTaskCard } from "@/components/live-task-card";
+import { useReminders } from "@/lib/reminders-store";
+import { formatDayLabel, formatTime, nextOccurrence } from "@/lib/reminders";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,6 +33,13 @@ const chips = ["Find a late-night pharmacy", "Book a haircut Saturday", "Renew m
 function Index() {
   const needsYou = tasks.filter((t) => t.status === "needs-you");
   const inMotion = tasks.filter((t) => t.status === "in-motion");
+  const { reminders } = useReminders();
+
+  const upNext = reminders
+    .filter((r) => r.status === "active")
+    .map((reminder) => ({ reminder, at: nextOccurrence(reminder) }))
+    .filter((x): x is { reminder: typeof reminders[number]; at: Date } => x.at !== null)
+    .sort((a, b) => a.at.getTime() - b.at.getTime())[0];
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -115,6 +124,27 @@ function Index() {
           </>
         ) : null}
 
+        {upNext ? <SectionHeader label="Next reminder" /> : null}
+        {upNext ? (
+          <Link
+            to="/reminders"
+            className="fade-up mb-1 flex items-center gap-3 rounded-2xl bg-raised px-4 py-3.5 backdrop-blur-md transition-transform active:scale-[0.99]"
+          >
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/18 text-primary">
+              <Bell className="size-4" strokeWidth={1.9} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[15px] font-semibold text-foreground">
+                {upNext.reminder.title}
+              </span>
+              <span className="mt-0.5 block text-[12.5px] text-muted-foreground">
+                {formatDayLabel(upNext.at)} at {formatTime(upNext.at)}
+              </span>
+            </span>
+            <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+          </Link>
+        ) : null}
+
         <SectionHeader label="Asmi can also" />
         <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5">
           {chips.map((chip) => (
@@ -128,21 +158,6 @@ function Index() {
           ))}
         </div>
       </div>
-
-      <nav className="grid shrink-0 grid-cols-3 bg-tabbar py-4 text-tabbar-foreground">
-        <span className="flex flex-col items-center gap-1.5 text-primary">
-          <Home className="size-5" strokeWidth={1.75} />
-          <span className="text-xs font-medium">Home</span>
-        </span>
-        <span className="flex flex-col items-center gap-1.5">
-          <Clock className="size-5" strokeWidth={1.75} />
-          <span className="text-xs font-medium">History</span>
-        </span>
-        <span className="flex flex-col items-center gap-1.5">
-          <CreditCard className="size-5" strokeWidth={1.75} />
-          <span className="text-xs font-medium">Payments</span>
-        </span>
-      </nav>
     </div>
   );
 }
