@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RemindersIndexRouteImport } from './routes/reminders.index'
 import { Route as TaskTaskIdIndexRouteImport } from './routes/task.$taskId.index'
 import { Route as TaskTaskIdStatusRouteImport } from './routes/task.$taskId.status'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RemindersIndexRoute = RemindersIndexRouteImport.update({
+  id: '/reminders/',
+  path: '/reminders/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TaskTaskIdIndexRoute = TaskTaskIdIndexRouteImport.update({
@@ -31,30 +37,35 @@ const TaskTaskIdStatusRoute = TaskTaskIdStatusRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/reminders/': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId/': typeof TaskTaskIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/reminders': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId': typeof TaskTaskIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/reminders/': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId/': typeof TaskTaskIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/task/$taskId/status' | '/task/$taskId/'
+  fullPaths: '/' | '/reminders/' | '/task/$taskId/status' | '/task/$taskId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/task/$taskId/status' | '/task/$taskId'
-  id: '__root__' | '/' | '/task/$taskId/status' | '/task/$taskId/'
+  to: '/' | '/reminders' | '/task/$taskId/status' | '/task/$taskId'
+  id:
+    '__root__' | '/' | '/reminders/' | '/task/$taskId/status' | '/task/$taskId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RemindersIndexRoute: typeof RemindersIndexRoute
   TaskTaskIdStatusRoute: typeof TaskTaskIdStatusRoute
   TaskTaskIdIndexRoute: typeof TaskTaskIdIndexRoute
 }
@@ -66,6 +77,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reminders/': {
+      id: '/reminders/'
+      path: '/reminders'
+      fullPath: '/reminders/'
+      preLoaderRoute: typeof RemindersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/task/$taskId/': {
@@ -87,6 +105,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RemindersIndexRoute: RemindersIndexRoute,
   TaskTaskIdStatusRoute: TaskTaskIdStatusRoute,
   TaskTaskIdIndexRoute: TaskTaskIdIndexRoute,
 }

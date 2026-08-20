@@ -15,7 +15,6 @@ import {
   formatTime,
   groupReminders,
   nextOccurrence,
-  toDateKey,
   type Reminder,
 } from "@/lib/reminders";
 
@@ -189,5 +188,3 @@ function RemindersPage() {
     </div>
   );
 }
-
-export { toDateKey };
