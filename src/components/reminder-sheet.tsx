@@ -34,7 +34,7 @@ function emptyDraft(): ReminderDraft {
   return {
     title: "",
     date: toDateKey(now),
-    time: "09:00",
+    time: "",
     channel: "message",
     repeat: "none",
     status: "active",
@@ -65,8 +65,10 @@ export function ReminderSheet({
   const set = <K extends keyof ReminderDraft>(key: K, value: ReminderDraft[K]) =>
     setDraft((d) => ({ ...d, [key]: value }));
 
-  const next = useMemo(() => (open ? nextOccurrence(draft) : null), [draft, open]);
-  const canSave = draft.title.trim().length > 0 && (draft.repeat !== "custom" || (draft.customDays?.length ?? 0) > 0);
+  const canSave =
+    draft.title.trim().length > 0 &&
+    draft.time.length > 0 &&
+    (draft.repeat !== "custom" || (draft.customDays?.length ?? 0) > 0);
 
   const toggleDay = (day: DayOfWeek) => {
     const days = draft.customDays ?? [];
@@ -254,26 +256,12 @@ export function ReminderSheet({
           ) : null}
         </div>
 
-        {/* asmi summary + save */}
         <div className="shrink-0 border-t border-border/60 px-5 pb-5 pt-4">
-          <div className="rounded-2xl bg-cream px-4 py-3">
-            <p className="flex items-start gap-2 text-[13.5px] font-medium leading-snug text-cream-foreground">
-              <Bell className="mt-0.5 size-4 shrink-0" strokeWidth={1.75} />
-              <span>
-                {draft.title.trim() ? asmiLine(draft) : "Tell me what to remind you about."}
-                {next ? (
-                  <span className="mt-0.5 block text-[12px] font-normal text-cream-foreground/70">
-                    First one {formatRelative(next)} · {timezoneLabel()}
-                  </span>
-                ) : null}
-              </span>
-            </p>
-          </div>
           <button
             type="button"
             disabled={!canSave}
             onClick={() => onSave({ ...draft, title: draft.title.trim() })}
-            className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-cta py-4 text-[15px] font-semibold text-cta-foreground transition-transform active:scale-[0.99] disabled:opacity-40"
+            className="cta-fill flex w-full items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold transition-transform active:scale-[0.99] disabled:opacity-40"
           >
             <Check className="size-4" strokeWidth={2.5} />
             {reminder ? "Save changes" : "Set reminder"}
