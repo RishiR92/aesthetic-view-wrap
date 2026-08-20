@@ -113,7 +113,19 @@ function RemindersPage() {
     <div className="relative flex min-h-0 flex-1 flex-col">
       <TopBar reminderCount={todayCount} />
 
-      <div className="flex-1 overflow-y-auto px-5 pb-28">
+      <div className="flex-1 overflow-y-auto px-5 pb-8">
+        <button
+          type="button"
+          onClick={() => {
+            setEditingId(undefined);
+            setComposerOpen(true);
+          }}
+          className="cta-fill mb-4 flex w-full items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
+        >
+          <Plus className="size-4" strokeWidth={2.5} />
+          New reminder
+        </button>
+
         {!mounted ? null : upNext ? (
           <section className="fade-up rounded-3xl bg-cream p-5">
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-cream-foreground/60">
@@ -162,20 +174,6 @@ function RemindersPage() {
             No reminders yet. Tap “New reminder” to add your first.
           </p>
         ) : null}
-      </div>
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/90 to-transparent px-5 pb-5 pt-8">
-        <button
-          type="button"
-          onClick={() => {
-            setEditingId(undefined);
-            setComposerOpen(true);
-          }}
-          className="cta-fill pointer-events-auto flex w-full items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
-        >
-          <Plus className="size-4" strokeWidth={2.5} />
-          New reminder
-        </button>
       </div>
 
       <ReminderSheet
