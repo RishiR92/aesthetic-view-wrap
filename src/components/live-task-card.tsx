@@ -10,8 +10,8 @@ export function LiveTaskCard({ task }: { task: Task }) {
       className="block rounded-2xl border border-border/60 bg-raised px-4 py-3.5 backdrop-blur-md transition-transform active:scale-[0.985]"
     >
       <div className="flex items-start gap-3">
-        <span className="mt-1 grid size-8 shrink-0 place-items-center rounded-full bg-cta/15 text-cta/40 pulse-ring">
-          <span className="size-2.5 rounded-full bg-cta" />
+        <span className="mt-1 grid size-8 shrink-0 place-items-center rounded-full bg-primary/15 text-primary/40 pulse-ring">
+          <span className="size-2.5 rounded-full bg-primary" />
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-semibold text-foreground">{task.title}</p>
