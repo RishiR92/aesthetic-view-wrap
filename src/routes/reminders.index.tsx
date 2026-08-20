@@ -111,10 +111,8 @@ function RemindersPage() {
       <TopBar reminderCount={todayCount} />
 
       <div className="flex-1 overflow-y-auto px-5 pb-28">
-        <h1 className="font-display text-[30px] leading-tight text-foreground">Reminders</h1>
-
         {upNext ? (
-          <section className="fade-up mt-4 rounded-3xl bg-cream p-5">
+          <section className="fade-up rounded-3xl bg-cream p-5">
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-cream-foreground/60">
               Next up
             </span>
@@ -130,7 +128,7 @@ function RemindersPage() {
             </p>
           </section>
         ) : (
-          <section className="fade-up mt-4 rounded-3xl bg-cream p-5">
+          <section className="fade-up rounded-3xl bg-cream p-5">
             <p className="text-[17px] font-semibold text-cream-foreground">Nothing on the calendar</p>
             <p className="mt-1.5 text-[13px] text-cream-foreground/70">
               Add one below and I'll text or call you right on time.
@@ -180,7 +178,6 @@ function RemindersPage() {
       <ReminderSheet
         open={sheetOpen}
         reminder={editing}
-        prefill={editing ? undefined : prefill}
         onClose={closeSheet}
         onSave={handleSave}
         onDelete={handleDelete}
