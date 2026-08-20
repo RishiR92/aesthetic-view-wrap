@@ -1,5 +1,5 @@
-import { Bell, Check, Clock, MessageSquare, Phone, Trash2, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Bell, CalendarDays, Check, ChevronRight, Clock, MessageSquare, Phone, Trash2, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   DAY_LETTERS,
@@ -301,6 +301,8 @@ function Chip({
       }}
       aria-pressed={onClick ? active : undefined}
       className={`cursor-pointer select-none rounded-full px-3.5 py-2 text-[13px] font-semibold transition-colors ${
+        ""
+      } ${
         active
           ? "bg-primary text-primary-foreground"
           : "border border-border text-muted-foreground hover:text-foreground"
@@ -308,6 +310,62 @@ function Chip({
     >
       {children}
     </span>
+  );
+}
+
+function PickerField({
+  icon,
+  label,
+  display,
+  type,
+  value,
+  onChange,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  display: string;
+  type: "date" | "time";
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+
+  const open = () => {
+    const el = ref.current;
+    if (!el) return;
+    el.focus();
+    const withPicker = el as HTMLInputElement & { showPicker?: () => void };
+    try {
+      withPicker.showPicker?.();
+    } catch {
+      el.click();
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={open}
+      className="mt-2 flex w-full items-center gap-3 rounded-2xl border border-border/70 bg-secondary/40 px-4 py-4 text-left transition-colors active:bg-secondary/70"
+    >
+      <span className="text-muted-foreground">{icon}</span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          {label}
+        </span>
+        <span className="mt-0.5 block truncate text-[17px] font-semibold text-foreground">{display}</span>
+      </span>
+      <ChevronRight className="size-4 shrink-0 text-muted-foreground" strokeWidth={2} />
+      <input
+        ref={ref}
+        type={type}
+        value={value}
+        onChange={(e) => e.target.value && onChange(e.target.value)}
+        aria-label={label}
+        className="pointer-events-none absolute size-0 opacity-0"
+        tabIndex={-1}
+      />
+    </button>
   );
 }
 
