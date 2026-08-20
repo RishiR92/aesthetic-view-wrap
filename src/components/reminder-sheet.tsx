@@ -131,34 +131,66 @@ export function ReminderSheet({
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               {draft.repeat === "none" ? "Date" : "Starting"}
             </span>
-            <div className="mt-2 grid grid-cols-2 gap-2">
+            <div className="mt-2 grid grid-cols-3 gap-2">
               {dateChips.map((chip) => (
-                <Chip key={chip.value} active={draft.date === chip.value} onClick={() => set("date", chip.value)}>
+                <Chip
+                  key={chip.value}
+                  active={draft.date === chip.value}
+                  onClick={() => {
+                    set("date", chip.value);
+                    setOpenPicker(null);
+                  }}
+                >
                   {chip.label}
                 </Chip>
               ))}
             </div>
-            <PickerField
+            <FieldRow
               icon={<CalendarDays className="size-[18px]" strokeWidth={1.9} />}
-              label="Pick a date"
+              label="Choose date"
               display={formatDayLabel(parseDateKey(draft.date))}
-              type="date"
-              value={draft.date}
-              onChange={(v) => set("date", v)}
+              expanded={openPicker === "date"}
+              onClick={() => setOpenPicker(openPicker === "date" ? null : "date")}
             />
+            {openPicker === "date" ? (
+              <MonthCalendar
+                value={draft.date}
+                onSelect={(v) => {
+                  set("date", v);
+                  setOpenPicker(null);
+                }}
+              />
+            ) : null}
           </div>
 
           {/* time */}
           <div>
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">Time</span>
-            <PickerField
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              {TIME_PRESETS.map((preset) => (
+                <Chip
+                  key={preset.value}
+                  active={draft.time === preset.value}
+                  onClick={() => {
+                    set("time", preset.value);
+                    setOpenPicker(null);
+                  }}
+                >
+                  <span className="block leading-tight">{preset.label}</span>
+                  <span className="mt-0.5 block text-[11px] font-medium opacity-70">{label12(preset.value)}</span>
+                </Chip>
+              ))}
+            </div>
+            <FieldRow
               icon={<Clock className="size-[18px]" strokeWidth={1.9} />}
-              label="Pick a time"
-              display={label12(draft.time)}
-              type="time"
-              value={draft.time}
-              onChange={(v) => set("time", v)}
+              label={draft.time ? "Time" : "Choose time"}
+              display={draft.time ? label12(draft.time) : "Not set"}
+              expanded={openPicker === "time"}
+              onClick={() => setOpenPicker(openPicker === "time" ? null : "time")}
             />
+            {openPicker === "time" ? (
+              <TimeWheel value={draft.time || "09:00"} onChange={(v) => set("time", v)} />
+            ) : null}
           </div>
 
           {/* repeat */}
