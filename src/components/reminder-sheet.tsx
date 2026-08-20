@@ -1,5 +1,5 @@
-import { Bell, Check, Clock, MessageSquare, Phone, Trash2, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Bell, CalendarDays, Check, ChevronRight, Clock, MessageSquare, Phone, Trash2, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   DAY_LETTERS,
@@ -124,44 +124,34 @@ export function ReminderSheet({
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               {draft.repeat === "none" ? "Date" : "Starting"}
             </span>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mt-2 grid grid-cols-2 gap-2">
               {dateChips.map((chip) => (
                 <Chip key={chip.value} active={draft.date === chip.value} onClick={() => set("date", chip.value)}>
                   {chip.label}
                 </Chip>
               ))}
-              <label className="relative inline-flex">
-                <Chip active={!dateChips.some((c) => c.value === draft.date)}>
-                  {dateChips.some((c) => c.value === draft.date)
-                    ? "Other date"
-                    : formatDayLabel(parseDateKey(draft.date))}
-                </Chip>
-                <input
-                  type="date"
-                  value={draft.date}
-                  onChange={(e) => e.target.value && set("date", e.target.value)}
-                  aria-label="Pick a date"
-                  className="absolute inset-0 cursor-pointer opacity-0"
-                />
-              </label>
             </div>
+            <PickerField
+              icon={<CalendarDays className="size-[18px]" strokeWidth={1.9} />}
+              label="Pick a date"
+              display={formatDayLabel(parseDateKey(draft.date))}
+              type="date"
+              value={draft.date}
+              onChange={(v) => set("date", v)}
+            />
           </div>
 
           {/* time */}
           <div>
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">Time</span>
-            <label className="relative mt-2 flex items-center gap-3 rounded-2xl border border-border/70 bg-secondary/40 px-4 py-3.5 transition-colors focus-within:border-primary">
-              <Clock className="size-4 shrink-0 text-muted-foreground" strokeWidth={1.9} />
-              <span className="flex-1 text-[17px] font-semibold text-foreground">{label12(draft.time)}</span>
-              <span className="text-[12px] font-medium text-muted-foreground">Tap to change</span>
-              <input
-                type="time"
-                value={draft.time}
-                onChange={(e) => e.target.value && set("time", e.target.value)}
-                aria-label="Pick a time"
-                className="absolute inset-0 cursor-pointer opacity-0"
-              />
-            </label>
+            <PickerField
+              icon={<Clock className="size-[18px]" strokeWidth={1.9} />}
+              label="Pick a time"
+              display={label12(draft.time)}
+              type="time"
+              value={draft.time}
+              onChange={(v) => set("time", v)}
+            />
           </div>
 
           {/* repeat */}
@@ -310,7 +300,7 @@ function Chip({
         }
       }}
       aria-pressed={onClick ? active : undefined}
-      className={`cursor-pointer select-none rounded-full px-3.5 py-2 text-[13px] font-semibold transition-colors ${
+      className={`cursor-pointer select-none rounded-full px-3.5 py-3 text-center text-[14px] font-semibold transition-colors ${
         active
           ? "bg-primary text-primary-foreground"
           : "border border-border text-muted-foreground hover:text-foreground"
@@ -318,6 +308,62 @@ function Chip({
     >
       {children}
     </span>
+  );
+}
+
+function PickerField({
+  icon,
+  label,
+  display,
+  type,
+  value,
+  onChange,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  display: string;
+  type: "date" | "time";
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+
+  const open = () => {
+    const el = ref.current;
+    if (!el) return;
+    el.focus();
+    const withPicker = el as HTMLInputElement & { showPicker?: () => void };
+    try {
+      withPicker.showPicker?.();
+    } catch {
+      el.click();
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={open}
+      className="relative mt-2 flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-border/70 bg-secondary/40 px-4 py-4 text-left transition-colors active:bg-secondary/70"
+    >
+      <span className="text-muted-foreground">{icon}</span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          {label}
+        </span>
+        <span className="mt-0.5 block truncate text-[17px] font-semibold text-foreground">{display}</span>
+      </span>
+      <ChevronRight className="size-4 shrink-0 text-muted-foreground" strokeWidth={2} />
+      <input
+        ref={ref}
+        type={type}
+        value={value}
+        onChange={(e) => e.target.value && onChange(e.target.value)}
+        aria-label={label}
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-0"
+        tabIndex={-1}
+      />
+    </button>
   );
 }
 
