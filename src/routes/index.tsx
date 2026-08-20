@@ -145,18 +145,6 @@ function Index() {
           </Link>
         ) : null}
 
-        <SectionHeader label="Asmi can also" />
-        <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5">
-          {chips.map((chip) => (
-            <button
-              key={chip}
-              type="button"
-              className="shrink-0 rounded-full border border-border px-4 py-2.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground"
-            >
-              {chip}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );
