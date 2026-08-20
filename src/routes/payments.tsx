@@ -42,7 +42,7 @@ function PaymentsPage() {
           </p>
           <button
             type="button"
-            className="mt-4 w-full rounded-full bg-cta py-3.5 text-[15px] font-semibold text-cta-foreground transition-transform active:scale-[0.99]"
+            className="cta-fill mt-4 w-full rounded-full py-3.5 text-[15px] font-semibold transition-transform active:scale-[0.99]"
           >
             Add a card
           </button>
