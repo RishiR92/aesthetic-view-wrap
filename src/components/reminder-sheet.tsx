@@ -528,9 +528,10 @@ function Wheel({
     const el = ref.current;
     if (!el) return;
     const index = Math.max(items.findIndex((i) => i.value === selected), 0);
-    el.scrollTop = index * ITEM_H;
+    if (Math.round(el.scrollTop / ITEM_H) === index) return;
+    el.scrollTo({ top: index * ITEM_H, behavior: el.scrollTop === 0 ? "auto" : "smooth" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selected]);
 
   const handleScroll = () => {
     const el = ref.current;
@@ -559,7 +560,12 @@ function Wheel({
             type="button"
             role="option"
             aria-selected={active}
-            onClick={() => onSelect(item.value)}
+            onClick={() => {
+              const el = ref.current;
+              const index = items.findIndex((i) => i.value === item.value);
+              el?.scrollTo({ top: index * ITEM_H, behavior: "smooth" });
+              onSelect(item.value);
+            }}
             className={`flex h-11 w-full snap-center items-center justify-center text-[19px] tabular-nums transition-all ${
               active ? "font-bold text-foreground" : "font-medium text-muted-foreground/60"
             }`}
