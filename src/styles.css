@@ -307,3 +307,8 @@
     display: none;
   }
 }
+
+@utility cta-fill {
+  background-image: var(--gradient-cta);
+  color: var(--cta-foreground);
+}
