@@ -300,9 +300,7 @@ function Chip({
         }
       }}
       aria-pressed={onClick ? active : undefined}
-      className={`cursor-pointer select-none rounded-full px-3.5 py-2 text-[13px] font-semibold transition-colors ${
-        ""
-      } ${
+      className={`cursor-pointer select-none rounded-full px-3.5 py-3 text-center text-[14px] font-semibold transition-colors ${
         active
           ? "bg-primary text-primary-foreground"
           : "border border-border text-muted-foreground hover:text-foreground"
@@ -346,7 +344,7 @@ function PickerField({
     <button
       type="button"
       onClick={open}
-      className="mt-2 flex w-full items-center gap-3 rounded-2xl border border-border/70 bg-secondary/40 px-4 py-4 text-left transition-colors active:bg-secondary/70"
+      className="relative mt-2 flex w-full items-center gap-3 overflow-hidden rounded-2xl border border-border/70 bg-secondary/40 px-4 py-4 text-left transition-colors active:bg-secondary/70"
     >
       <span className="text-muted-foreground">{icon}</span>
       <span className="min-w-0 flex-1">
@@ -362,7 +360,7 @@ function PickerField({
         value={value}
         onChange={(e) => e.target.value && onChange(e.target.value)}
         aria-label={label}
-        className="pointer-events-none absolute size-0 opacity-0"
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-0"
         tabIndex={-1}
       />
     </button>
