@@ -7,6 +7,7 @@ import { SectionHeader } from "@/components/section-header";
 import { ReminderRow } from "@/components/reminder-row";
 import { ReminderSheet, type ReminderDraft } from "@/components/reminder-sheet";
 import { TopBar } from "@/components/top-bar";
+import { TimezoneNote } from "@/components/timezone-note";
 import { useReminders } from "@/lib/reminders-store";
 import {
   asmiLine,
@@ -114,6 +115,7 @@ function RemindersPage() {
       <TopBar reminderCount={todayCount} />
 
       <div className="flex-1 overflow-y-auto px-5 pb-8">
+        <TimezoneNote />
         <button
           type="button"
           onClick={() => {
