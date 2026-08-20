@@ -197,7 +197,9 @@ export function ReminderSheet({
               ))}
               <label className="relative inline-flex">
                 <Chip active={!dateChips.some((c) => c.value === draft.date)}>
-                  {formatDayLabel(parseDateKey(draft.date))}
+                  {dateChips.some((c) => c.value === draft.date)
+                    ? "Other date"
+                    : formatDayLabel(parseDateKey(draft.date))}
                 </Chip>
                 <input
                   type="date"
@@ -220,7 +222,9 @@ export function ReminderSheet({
                 </Chip>
               ))}
               <label className="relative inline-flex">
-                <Chip active={!QUICK_TIMES.includes(draft.time)}>{label12(draft.time)}</Chip>
+                <Chip active={!QUICK_TIMES.includes(draft.time)}>
+                  {QUICK_TIMES.includes(draft.time) ? "Other time" : label12(draft.time)}
+                </Chip>
                 <input
                   type="time"
                   value={draft.time}

@@ -45,7 +45,7 @@ export function ReminderRow({
         <Icon className="size-4" strokeWidth={1.9} />
       </span>
 
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 pr-1">
         <p className="truncate text-[15px] font-semibold text-foreground">{reminder.title}</p>
         <p className="mt-0.5 flex items-center gap-1.5 truncate text-[12.5px] text-muted-foreground">
           {reminder.repeat !== "none" ? <Repeat2 className="size-3.5 shrink-0" strokeWidth={1.9} /> : null}
