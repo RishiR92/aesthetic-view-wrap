@@ -28,7 +28,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const chips = ["Find a late-night pharmacy", "Book a haircut Saturday", "Renew my car insurance"];
 
 function Index() {
   const needsYou = tasks.filter((t) => t.status === "needs-you");
