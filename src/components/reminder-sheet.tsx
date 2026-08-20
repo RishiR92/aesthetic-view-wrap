@@ -1,18 +1,23 @@
-import { Bell, CalendarDays, Check, ChevronRight, Clock, MessageSquare, Phone, Trash2, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  CalendarDays,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  MessageSquare,
+  Phone,
+  Trash2,
+  X,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   DAY_LETTERS,
   REPEAT_LABELS,
   addDays,
-  asmiLine,
   formatDayLabel,
-  formatRelative,
-  nextOccurrence,
   parseDateKey,
-  timezoneLabel,
   toDateKey,
-  type Channel,
   type DayOfWeek,
   type Reminder,
   type Repeat,
