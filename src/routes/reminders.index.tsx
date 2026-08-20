@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Bell, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { SectionHeader } from "@/components/section-header";
@@ -50,6 +50,9 @@ function RemindersPage() {
 
   const [composerOpen, setComposerOpen] = useState(Boolean(prefill));
   const [editingId, setEditingId] = useState<string | undefined>(id);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const groups = useMemo(() => groupReminders(reminders), [reminders]);
   const active = reminders.filter((r) => r.status === "active");
@@ -111,7 +114,7 @@ function RemindersPage() {
       <TopBar reminderCount={todayCount} />
 
       <div className="flex-1 overflow-y-auto px-5 pb-28">
-        {upNext ? (
+        {!mounted ? null : upNext ? (
           <section className="fade-up rounded-3xl bg-cream p-5">
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-cream-foreground/60">
               Next up
@@ -136,7 +139,7 @@ function RemindersPage() {
           </section>
         )}
 
-        {groups.map((group) => (
+        {(mounted ? groups : []).map((group) => (
           <div key={group.key}>
             <SectionHeader label={group.label} chip={`${group.items.length}`} />
             <div className="space-y-2.5">
@@ -168,7 +171,7 @@ function RemindersPage() {
             setEditingId(undefined);
             setComposerOpen(true);
           }}
-          className="pointer-events-auto flex w-full items-center justify-center gap-2 rounded-full bg-cta py-4 text-[15px] font-semibold text-cta-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
+          className="cta-fill pointer-events-auto flex w-full items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
         >
           <Plus className="size-4" strokeWidth={2.5} />
           New reminder
