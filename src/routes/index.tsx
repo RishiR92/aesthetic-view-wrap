@@ -125,6 +125,25 @@ function Index() {
         ) : null}
 
         <SectionHeader label="Asmi can also" />
+        {upNext ? (
+          <Link
+            to="/reminders"
+            className="fade-up mb-1 flex items-center gap-3 rounded-2xl bg-raised px-4 py-3.5 backdrop-blur-md transition-transform active:scale-[0.99]"
+          >
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/18 text-primary">
+              <Bell className="size-4" strokeWidth={1.9} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[15px] font-semibold text-foreground">
+                {upNext.reminder.title}
+              </span>
+              <span className="mt-0.5 block text-[12.5px] text-muted-foreground">
+                {formatDayLabel(upNext.at)} at {formatTime(upNext.at)}
+              </span>
+            </span>
+            <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+          </Link>
+        ) : null}
         <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5">
           {chips.map((chip) => (
             <button
