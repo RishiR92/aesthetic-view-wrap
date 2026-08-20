@@ -26,11 +26,6 @@ import { Switch } from "@/components/ui/switch";
 
 const REPEATS: Repeat[] = ["none", "daily", "weekdays", "weekly", "monthly", "custom"];
 const DAY_ORDER: DayOfWeek[] = [0, 1, 2, 3, 4, 5, 6];
-const TIME_PRESETS = [
-  { label: "Morning", value: "09:00" },
-  { label: "Evening", value: "18:00" },
-  { label: "Night", value: "21:00" },
-];
 
 export type ReminderDraft = Omit<Reminder, "id">;
 
@@ -39,7 +34,7 @@ function emptyDraft(): ReminderDraft {
   return {
     title: "",
     date: toDateKey(now),
-    time: "",
+    time: "09:00",
     channel: "message",
     repeat: "none",
     status: "active",
@@ -83,13 +78,6 @@ export function ReminderSheet({
   };
 
   if (!open) return null;
-
-  const dayAfter = addDays(new Date(), 2);
-  const dateChips: { label: string; value: string }[] = [
-    { label: "Today", value: toDateKey(new Date()) },
-    { label: "Tomorrow", value: toDateKey(addDays(new Date(), 1)) },
-    { label: dayAfter.toLocaleDateString("en-US", { weekday: "short" }), value: toDateKey(dayAfter) },
-  ];
 
   return (
     <div className="absolute inset-0 z-50 flex flex-col justify-end">
@@ -140,23 +128,9 @@ export function ReminderSheet({
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               {draft.repeat === "none" ? "Date" : "Starting"}
             </span>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              {dateChips.map((chip) => (
-                <Chip
-                  key={chip.value}
-                  active={draft.date === chip.value}
-                  onClick={() => {
-                    set("date", chip.value);
-                    setOpenPicker(null);
-                  }}
-                >
-                  {chip.label}
-                </Chip>
-              ))}
-            </div>
             <FieldRow
               icon={<CalendarDays className="size-[18px]" strokeWidth={1.9} />}
-              label="Choose date"
+              label="Date"
               display={formatDayLabel(parseDateKey(draft.date))}
               expanded={openPicker === "date"}
               onClick={() => setOpenPicker(openPicker === "date" ? null : "date")}
@@ -175,25 +149,10 @@ export function ReminderSheet({
           {/* time */}
           <div>
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">Time</span>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              {TIME_PRESETS.map((preset) => (
-                <Chip
-                  key={preset.value}
-                  active={draft.time === preset.value}
-                  onClick={() => {
-                    set("time", preset.value);
-                    setOpenPicker(null);
-                  }}
-                >
-                  <span className="block leading-tight">{preset.label}</span>
-                  <span className="mt-0.5 block text-[11px] font-medium opacity-70">{label12(preset.value)}</span>
-                </Chip>
-              ))}
-            </div>
             <FieldRow
               icon={<Clock className="size-[18px]" strokeWidth={1.9} />}
-              label={draft.time ? "Time" : "Choose time"}
-              display={draft.time ? label12(draft.time) : "Not set"}
+              label="Time"
+              display={label12(draft.time || "09:00")}
               expanded={openPicker === "time"}
               onClick={() => {
                 if (openPicker === "time") {
