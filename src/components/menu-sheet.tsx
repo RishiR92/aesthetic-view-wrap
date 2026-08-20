@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, CreditCard, History, House, X } from "lucide-react";
+import { Bell, CreditCard, History, House, Plus, X } from "lucide-react";
 
 const ITEMS = [
   { to: "/", label: "Home", icon: House },
@@ -41,6 +41,15 @@ export function MenuSheet({
         </div>
 
         <nav aria-label="Main" className="mt-4 space-y-1">
+          <Link
+            to="/reminders"
+            search={{ new: "1" }}
+            onClick={onClose}
+            className="mb-2 flex items-center gap-3 rounded-2xl bg-primary/15 px-3 py-3 text-[15px] font-semibold text-foreground ring-1 ring-primary/40 transition-colors hover:bg-primary/25"
+          >
+            <Plus className="size-5 shrink-0" strokeWidth={2.2} />
+            New reminder
+          </Link>
           {ITEMS.map(({ to, label, icon: Icon }) => (
             <Link
               key={to}
