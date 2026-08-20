@@ -120,9 +120,11 @@ function RemindersPage() {
             setEditingId(undefined);
             setComposerOpen(true);
           }}
-          className="cta-fill mb-4 flex w-full items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
+          className="mb-4 flex w-full items-center gap-2 rounded-full border border-border/70 bg-raised/60 px-4 py-2.5 text-[15px] font-semibold text-foreground backdrop-blur-md transition-all active:scale-[0.99]"
         >
-          <Plus className="size-4" strokeWidth={2.5} />
+          <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/18 text-primary">
+            <Plus className="size-3.5" strokeWidth={2.5} />
+          </span>
           New reminder
         </button>
 
