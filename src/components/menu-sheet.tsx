@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, CreditCard, History, House, Plus, X } from "lucide-react";
+import { Bell, CreditCard, History, House, X } from "lucide-react";
 
 const ITEMS = [
   { to: "/", label: "Home", icon: House },
