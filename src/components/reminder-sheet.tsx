@@ -1,4 +1,4 @@
-import { Bell, Calendar, Check, Clock, MessageSquare, Phone, Trash2, X } from "lucide-react";
+import { Bell, Check, Clock, MessageSquare, Phone, Trash2, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import {
@@ -73,7 +73,6 @@ export function ReminderSheet({
   const dateChips: { label: string; value: string }[] = [
     { label: "Today", value: toDateKey(new Date()) },
     { label: "Tomorrow", value: toDateKey(addDays(new Date(), 1)) },
-    { label: "Next week", value: toDateKey(addDays(new Date(), 7)) },
   ];
 
   return (
