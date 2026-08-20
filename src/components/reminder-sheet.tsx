@@ -195,7 +195,14 @@ export function ReminderSheet({
               label={draft.time ? "Time" : "Choose time"}
               display={draft.time ? label12(draft.time) : "Not set"}
               expanded={openPicker === "time"}
-              onClick={() => setOpenPicker(openPicker === "time" ? null : "time")}
+              onClick={() => {
+                if (openPicker === "time") {
+                  setOpenPicker(null);
+                  return;
+                }
+                if (!draft.time) set("time", "09:00");
+                setOpenPicker("time");
+              }}
             />
             {openPicker === "time" ? (
               <TimeWheel value={draft.time || "09:00"} onChange={(v) => set("time", v)} />
