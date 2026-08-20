@@ -224,20 +224,6 @@ export function ReminderSheet({
             </div>
           </div>
 
-          {/* note */}
-          <div>
-            <label htmlFor="note" className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Note <span className="font-medium normal-case tracking-normal">(optional)</span>
-            </label>
-            <input
-              id="note"
-              value={draft.note ?? ""}
-              onChange={(e) => set("note", e.target.value)}
-              placeholder="Anything Asmi should mention"
-              className="mt-2 w-full rounded-2xl border border-border/70 bg-secondary/40 px-3 py-2.5 text-[14px] text-foreground outline-none transition-colors focus:border-primary placeholder:text-muted-foreground/70"
-            />
-          </div>
-
           {reminder ? (
             <div className="space-y-3 border-t border-border/60 pt-4">
               <div className="flex items-center justify-between">
