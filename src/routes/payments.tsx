@@ -142,15 +142,15 @@ function PaymentsPage() {
               type="button"
               onClick={() => start("link")}
               disabled={pending !== null}
-              className="flex h-[48px] w-full items-center justify-center gap-2 rounded-full bg-link px-4 text-[14px] font-semibold text-link-foreground transition-transform active:scale-[0.99] disabled:opacity-60"
+              className="flex h-10 w-full items-center justify-center gap-1.5 rounded-full border border-link/30 bg-link/10 px-4 text-[13px] font-semibold text-link transition-transform active:scale-[0.99] disabled:opacity-60"
             >
               {pending === "link" ? (
-                <span className="size-4 animate-spin rounded-full border-2 border-link-foreground/40 border-t-link-foreground" />
+                <span className="size-4 animate-spin rounded-full border-2 border-link/40 border-t-link" />
               ) : (
                 <>
                   Pay securely with
                   <span className="flex items-center gap-1 font-bold">
-                    <span className="flex size-4 items-center justify-center rounded-full bg-link-foreground text-[9px] text-link">
+                    <span className="flex size-3.5 items-center justify-center rounded-full bg-link-foreground text-[8px] text-link">
                       ➔
                     </span>
                     link
