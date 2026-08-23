@@ -4,7 +4,7 @@ Strip the clutter, keep one calm cream card, and make the card form live inside 
 
 ## What gets removed
 - The "Subscription & billing" eyebrow label above the title.
-- All four feature bullets. In their place, a single line of summary copy: "Asmi handles the calls, messages and follow-ups so you don't have to."
+- All four feature bullets.
 - The current chunky coupon block (input + Apply button sitting in a box) and the stacked three-button CTA pile.
 
 ## New structure (top to bottom)
