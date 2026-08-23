@@ -4,13 +4,13 @@ Strip the clutter, keep one calm cream card, and make the card form live inside 
 
 ## What gets removed
 - The "Subscription & billing" eyebrow label above the title.
-- Three of the four benefit lines: "Plan and coordinate with friends", "Book appointments and services", "Place orders and get info from the offline world".
+- All four feature bullets. In their place, a single line of summary copy: "Asmi handles the calls, messages and follow-ups so you don't have to."
 - The current chunky coupon block (input + Apply button sitting in a box) and the stacked three-button CTA pile.
 
 ## New structure (top to bottom)
 1. **Asmi Unlimited** title + one-line subtitle.
 2. **Cream card**
-   - One short benefit line kept: "Resolve disputes with banks, insurance, support" — rendered as quiet body copy, not a checklist. (Say the word if you'd rather keep zero lines or a different single line.)
+   - A single calm summary line: "Asmi handles the calls, messages and follow-ups so you don't have to."
    - Two plan tiles (Monthly $10 / Yearly $99, Save 18%) — unchanged behaviour, slightly tighter.
    - **Apple Pay** — black pill, first and visually primary, shown only on supporting devices.
    - **Pay with Link** — green pill, unchanged.
