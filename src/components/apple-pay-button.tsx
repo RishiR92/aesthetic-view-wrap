@@ -9,17 +9,6 @@ export function ApplePayButton({
   pending?: boolean | undefined;
   disabled?: boolean | undefined;
 }) {
-  const [supported, setSupported] = useState(false);
-
-  useEffect(() => {
-    const w = window as unknown as { ApplePaySession?: { canMakePayments?: () => boolean } };
-    const session = w.ApplePaySession;
-    const isApple = /Mac|iPhone|iPad|iPod/.test(window.navigator.platform ?? "");
-    setSupported(Boolean(session?.canMakePayments?.() ?? (session && isApple)));
-  }, []);
-
-  if (!supported) return null;
-
   return (
     <button
       type="button"
