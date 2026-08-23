@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 
 export function ApplePayButton({
   onPay,
