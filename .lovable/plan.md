@@ -5,7 +5,7 @@ The page sells one thing: **Asmi Unlimited**. The two tiles are billing periods,
 ## Core hierarchy
 1. **Title block**
    - H1: "Asmi Unlimited"
-   - Subtitle: "One plan. Unlimited tasks, calls and messages done for you."
+   - Subtitle: "One plan. Unlimited tasks."
    - No eyebrow label, no bullets.
 
 2. **Plan card (cream surface)**
@@ -32,7 +32,7 @@ The page sells one thing: **Asmi Unlimited**. The two tiles are billing periods,
    - Applied state: small "CODE applied · Remove" line. No box, no filled button.
 
 7. **Footer**
-   - Lock icon + "Payments are processed securely. Card details never touch Asmi."
+   - Lock icon + "Payments are processed securely via Stripe"
 
 ## Interactions and defaults
 - **Default selection:** Yearly ($99/yr) pre-selected to nudge toward the better-value option.
