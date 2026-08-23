@@ -1,30 +1,53 @@
-# Payments page — classy rethink
+# Payments page — one-plan, unlimited tasks rethink
 
-Strip the clutter, keep one calm cream card, and make the card form live inside an expanding accordion (like your screenshot).
+The page sells one thing: **Asmi Unlimited**. The two tiles are billing periods, not separate plans. Apple Pay is the primary CTA; card and Link are quiet alternatives. No feature list, no clutter.
 
-## What gets removed
-- The "Subscription & billing" eyebrow label above the title.
-- All four feature bullets.
-- The current chunky coupon block (input + Apply button sitting in a box) and the stacked three-button CTA pile.
+## Core hierarchy
+1. **Title block**
+   - H1: "Asmi Unlimited"
+   - Subtitle: "One plan. Unlimited tasks, calls and messages done for you."
+   - No eyebrow label, no bullets.
 
-## New structure (top to bottom)
-1. **Asmi Unlimited** title + one-line subtitle.
-2. **Cream card**
-   - Two plan tiles (Monthly $10 / Yearly $99, Save 18%) — unchanged behaviour, slightly tighter.
-   - **Apple Pay** — black pill, first and visually primary, shown only on supporting devices.
-   - **Pay with Link** — green pill, unchanged.
-   - Hairline divider with a small centered "or" instead of stacked equal buttons.
-   - **Pay with card** — collapsed row with card icon + chevron. Tapping expands in place to reveal Name on card, Card number, Expiry, CVC and a full-width amber **Subscribe for $10.00/month** button (label follows the selected plan). Chevron rotates; collapsing hides fields.
-3. **Coupon** — reduced to a single quiet underlined text link "Have a coupon code?" placed below the card. Tapping swaps it inline for a borderless field with a subtle amber "Apply" text button; applied state becomes a small "CODE applied · Remove" line. No box, no filled button.
-4. Footer lock line: secure-payment reassurance (kept, unchanged).
+2. **Plan card (cream surface)**
+   - A single large value headline: "$10/mo" with a secondary "$99/yr — Save 18%" nudge.
+   - Two billing-period chips: **Monthly** and **Yearly**. Yearly gets the "Save 18%" micro-badge and is selected by default.
+   - One quiet reassurance line inside the card: "Cancel anytime. Billed automatically."
+
+3. **Primary action — Apple Pay**
+   - Black Apple Pay button, full width, first in the stack.
+   - Hidden on non-Apple-Pay devices; in that case the card accordion becomes the primary action.
+
+4. **Secondary action — Pay with card (expandable accordion)**
+   - Collapsed row: card icon + "Pay with card" + chevron.
+   - Expands in place to reveal Name on card, Card number, Expiry/CVC and an amber "Subscribe for $10.00/month" button (label follows selected period).
+   - Chevron rotates; collapsing hides fields.
+
+5. **Tertiary action — Link**
+   - Green Link pill below the card accordion, smaller visual weight than Apple Pay.
+   - Kept because the user already has it and it is a real payment method.
+
+6. **Coupon**
+   - A single quiet underlined text link "Have a coupon code?" below the payment stack.
+   - Tapping swaps it inline for a borderless field + subtle amber "Apply" text button.
+   - Applied state: small "CODE applied · Remove" line. No box, no filled button.
+
+7. **Footer**
+   - Lock icon + "Payments are processed securely. Card details never touch Asmi."
+
+## Interactions and defaults
+- **Default selection:** Yearly ($99/yr) pre-selected to nudge toward the better-value option.
+- **Plan switch:** chips update the subscribe button label and footer billing text instantly.
+- **Apple Pay:** tapping triggers the existing `start("apple")` pending state.
+- **Card accordion:** only one open state; opening focuses the first field. Fields are presentational (no real charge) until payments are wired.
+- **Link:** kept as a pill, but visually subordinate to Apple Pay.
 
 ## Design notes
-- All colors stay on existing tokens: `bg-cream`, `primary` amber, `link` green, plum page background. No new palette.
-- Card inputs use `bg-cream-foreground/6` surfaces, 16px radius, 48px height, mobile-friendly `inputMode`/`autoComplete` so iOS keyboards and autofill behave.
-- Accordion animates height/opacity with the existing ease curve; no layout jump.
-- Fields are presentational only (no charge is processed) until real payments are wired up.
+- Existing tokens only: `bg-cream`, `primary` amber, `link` green, plum page background.
+- Card inputs use `bg-cream-foreground/6`, 16px radius, 48px height, proper `autoComplete` for iOS autofill.
+- Accordion animates height/opacity with the existing ease curve.
+- No new colors; no feature bullets.
 
-## Technical
-- Edit `src/routes/payments.tsx`: trim `BENEFITS`, add `cardOpen` state and the accordion, restyle coupon as inline link.
-- New `src/components/card-form.tsx` holding the expanded card fields + subscribe button, keeping the route file readable.
-- `src/components/apple-pay-button.tsx` reused as-is.
+## Files to change
+- `src/routes/payments.tsx`: rewrite the page with the new hierarchy, plan chips, and inline coupon.
+- `src/components/card-form.tsx`: new component for the expanded card fields + subscribe button.
+- `src/components/apple-pay-button.tsx`: reuse as-is.
