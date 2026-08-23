@@ -76,6 +76,8 @@
   --color-cta: var(--cta);
   --color-cta-foreground: var(--cta-foreground);
   --color-raised: var(--raised);
+  --color-link: var(--link);
+  --color-link-foreground: var(--link-foreground);
   --radius-shell: var(--radius-shell-value);
 }
 
@@ -110,6 +112,8 @@
   --cream-foreground: oklch(0.24 0.015 300);
   --cta: oklch(0.63 0.16 43);
   --cta-foreground: oklch(0.99 0.005 90);
+  --link: oklch(0.8 0.15 152);
+  --link-foreground: oklch(0.24 0.03 305);
   --gradient-cta: linear-gradient(135deg, oklch(0.66 0.16 48), oklch(0.61 0.16 38));
   --raised: oklch(0.33 0.036 305 / 65%);
   --shadow-lift: 0 18px 40px -16px oklch(0.15 0.03 305 / 55%);
