@@ -10,7 +10,6 @@ Strip the clutter, keep one calm cream card, and make the card form live inside 
 ## New structure (top to bottom)
 1. **Asmi Unlimited** title + one-line subtitle.
 2. **Cream card**
-   - A single calm summary line: "Asmi handles the calls, messages and follow-ups so you don't have to."
    - Two plan tiles (Monthly $10 / Yearly $99, Save 18%) — unchanged behaviour, slightly tighter.
    - **Apple Pay** — black pill, first and visually primary, shown only on supporting devices.
    - **Pay with Link** — green pill, unchanged.
