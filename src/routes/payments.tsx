@@ -110,8 +110,8 @@ function PaymentsPage() {
                   onClick={() => setPlan(p.id)}
                   className={`relative overflow-hidden rounded-2xl p-3.5 text-left transition-[transform,box-shadow,opacity] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                     active
-                      ? "scale-[1.02] bg-primary/12 ring-1 ring-primary shadow-[var(--shadow-lift)]"
-                      : "scale-[0.99] bg-cream-foreground/6 opacity-[0.78] ring-1 ring-cream-foreground/10"
+                      ? "bg-primary/12 ring-1 ring-primary shadow-[var(--shadow-lift)]"
+                      : "scale-[0.98] bg-cream-foreground/6 opacity-[0.78] ring-1 ring-cream-foreground/10"
                   }`}
                 >
                   {p.badge ? (
