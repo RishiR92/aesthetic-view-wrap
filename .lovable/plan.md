@@ -1,6 +1,6 @@
-# Payments page — one plan, unlimited tasks
+# Payments page — classy rethink
 
-Strip the clutter and make the whole page about a single decision: start Asmi Unlimited. Keep one calm cream card with the plan, the price, and the payment choices.
+Strip the clutter, keep one calm cream card, and make the card form live inside an expanding accordion (like your screenshot).
 
 ## What gets removed
 - The "Subscription & billing" eyebrow label above the title.
