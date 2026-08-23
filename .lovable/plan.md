@@ -4,7 +4,7 @@ Strip the clutter, keep one calm cream card, and make the card form live inside 
 
 ## What gets removed
 - The "Subscription & billing" eyebrow label above the title.
-- Three of the four benefit lines: "Plan and coordinate with friends", "Book appointments and services", "Place orders and get info from the offline world".
+- All four feature bullets. In their place, a single line of summary copy: "Asmi handles the calls, messages and follow-ups so you don't have to."
 - The current chunky coupon block (input + Apply button sitting in a box) and the stacked three-button CTA pile.
 
 ## New structure (top to bottom)
