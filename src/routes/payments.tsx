@@ -50,8 +50,8 @@ const PLANS: {
 
 const INCLUDED = [
   "Unlimited tasks, every month",
-  "Asmi calls, texts and emails on your behalf",
-  "Reminders, follow-ups and confirmations handled",
+  "Asmi completes task via calls, texts & emails.",
+  "Reminders, follow-ups and coordination handled.",
 ];
 
 function PaymentsPage() {
