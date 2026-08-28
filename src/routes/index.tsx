@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bell, ChevronRight, Star } from "lucide-react";
 
@@ -34,11 +35,18 @@ function Index() {
   const inMotion = tasks.filter((t) => t.status === "in-motion");
   const { reminders } = useReminders();
 
-  const upNext = reminders
-    .filter((r) => r.status === "active")
-    .map((reminder) => ({ reminder, at: nextOccurrence(reminder) }))
-    .filter((x): x is { reminder: typeof reminders[number]; at: Date } => x.at !== null)
-    .sort((a, b) => a.at.getTime() - b.at.getTime())[0];
+  // nextOccurrence() depends on "now", which differs between server and
+  // client render — only compute it after hydration to avoid a mismatch.
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+
+  const upNext = hydrated
+    ? reminders
+        .filter((r) => r.status === "active")
+        .map((reminder) => ({ reminder, at: nextOccurrence(reminder) }))
+        .filter((x): x is { reminder: typeof reminders[number]; at: Date } => x.at !== null)
+        .sort((a, b) => a.at.getTime() - b.at.getTime())[0]
+    : undefined;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
