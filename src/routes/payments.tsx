@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Lock, Tag } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { ApplePayButton } from "@/components/apple-pay-button";
+import { BillingSwitch, type Period } from "@/components/billing-switch";
 import { CardAccordion } from "@/components/card-form";
 import { PlanCard, type PlanSpec } from "@/components/plan-card";
 import { TopBar } from "@/components/top-bar";
@@ -26,7 +27,6 @@ export const Route = createFileRoute("/payments")({
 });
 
 type Tier = "pro" | "ultra";
-type Period = "monthly" | "yearly";
 
 const PLANS: Record<Tier, PlanSpec> = {
   ultra: {
@@ -48,11 +48,23 @@ const PLANS: Record<Tier, PlanSpec> = {
 function PaymentsPage() {
   const [tier, setTier] = useState<Tier | null>(null);
   const [period, setPeriod] = useState<Period>("yearly");
+  const [shimmer, setShimmer] = useState(false);
+  const shimmerTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [cardOpen, setCardOpen] = useState(false);
   const [couponOpen, setCouponOpen] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [applied, setApplied] = useState<string | null>(null);
   const [pending, setPending] = useState<"apple" | "link" | "card" | null>(null);
+
+  const changePeriod = (p: Period) => {
+    if (p === period) return;
+    setPeriod(p);
+    if (p === "yearly") {
+      setShimmer(true);
+      if (shimmerTimer.current) clearTimeout(shimmerTimer.current);
+      shimmerTimer.current = setTimeout(() => setShimmer(false), 950);
+    }
+  };
 
   const start = (method: "apple" | "link" | "card") => {
     setPending(method);
@@ -60,11 +72,7 @@ function PaymentsPage() {
   };
 
   const spec = tier ? PLANS[tier] : null;
-  const subscribeLabel = spec
-    ? `Subscribe to ${spec.name} — ${period === "yearly" ? spec.yearly : spec.monthly}.00/${
-        period === "yearly" ? "year" : "month"
-      }`
-    : "Subscribe";
+  const subscribeLabel = spec ? `Subscribe to ${spec.name}` : "Subscribe";
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -73,26 +81,9 @@ function PaymentsPage() {
       <div className="flex-1 overflow-y-auto px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
         <h1 className="font-display text-[30px] leading-tight text-foreground">Choose your plan</h1>
 
-        {/* Billing period toggle */}
-        <div
-          role="radiogroup"
-          aria-label="Billing period"
-          className="mt-5 grid grid-cols-2 rounded-full bg-cream-foreground/6 p-1 ring-1 ring-cream-foreground/10"
-        >
-          {(["monthly", "yearly"] as const).map((p) => (
-            <button
-              key={p}
-              type="button"
-              role="radio"
-              aria-checked={period === p}
-              onClick={() => setPeriod(p)}
-              className={`h-10 rounded-full text-[13.5px] font-semibold capitalize transition-colors ${
-                period === p ? "bg-cream text-cream-foreground shadow-sm" : "text-muted-foreground"
-              }`}
-            >
-              {p}
-            </button>
-          ))}
+        {/* Billing period switch */}
+        <div className="mt-5">
+          <BillingSwitch period={period} onChange={changePeriod} />
         </div>
 
         {/* Plan cards */}
@@ -102,6 +93,7 @@ function PaymentsPage() {
               spec={PLANS.ultra}
               period={period}
               featured
+              shimmer={shimmer}
               selected={tier === "ultra"}
               onSelect={() => setTier("ultra")}
             />
@@ -110,6 +102,7 @@ function PaymentsPage() {
             <PlanCard
               spec={PLANS.pro}
               period={period}
+              shimmer={shimmer}
               selected={tier === "pro"}
               onSelect={() => setTier("pro")}
             />
