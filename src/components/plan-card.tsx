@@ -97,8 +97,8 @@ export function PlanCard({
         <p
           key={period}
           className={`price-roll mt-2 text-[15px] font-medium ${
-            featured ? "text-cream/80" : "text-cream-foreground/70"
-          }`}
+            shimmer ? "price-shimmer " : ""
+          }${featured ? "text-cream/80" : "text-cream-foreground/70"}`}
         >
           {price}
           <span className={featured ? "text-cream/45" : "text-cream-foreground/45"}>
