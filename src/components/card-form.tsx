@@ -29,8 +29,6 @@ export function CardAccordion({
     }
   }, [open]);
 
-  const label = plan === "yearly" ? "Subscribe for $99.00/year" : "Subscribe for $10.00/month";
-
   return (
     <div
       className={`overflow-hidden rounded-2xl transition-[background-color,box-shadow] duration-200 ${
