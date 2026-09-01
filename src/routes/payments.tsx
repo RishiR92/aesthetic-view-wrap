@@ -17,10 +17,7 @@ export const Route = createFileRoute("/payments")({
           "Choose Asmi Pro or Asmi Ultra: tasks done for you via calls, texts and emails. Monthly or yearly, cancel anytime.",
       },
       { property: "og:title", content: "Asmi plans — Pro & Ultra" },
-      {
-        property: "og:description",
-        content: "One tap. Tasks done for you.",
-      },
+      { property: "og:description", content: "Tasks, done for you." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -34,34 +31,22 @@ type Period = "monthly" | "yearly";
 const PLANS: Record<Tier, PlanSpec> = {
   ultra: {
     id: "ultra",
-    name: "Asmi Ultra",
-    tagline: "For people who hand everything off.",
-    monthly: { price: "$49", note: "Billed monthly" },
-    yearly: { price: "$499", note: "$41.58/mo, billed yearly" },
-    benefits: [
-      "100 tasks every month",
-      "Priority execution — your calls, texts & emails jump the queue",
-      "Reminders, follow-ups and coordination handled",
-      "Cancel anytime",
-    ],
+    name: "Ultra",
+    tasks: "100",
+    monthly: "$49",
+    yearly: "$499",
   },
   pro: {
     id: "pro",
-    name: "Asmi Pro",
-    tagline: "Everyday help, handled.",
-    monthly: { price: "$10", note: "Billed monthly" },
-    yearly: { price: "$99", note: "$8.25/mo, billed yearly" },
-    benefits: [
-      "20 tasks every month",
-      "Asmi completes tasks via calls, texts & emails",
-      "Reminders and follow-ups handled",
-      "Cancel anytime",
-    ],
+    name: "Pro",
+    tasks: "20",
+    monthly: "$10",
+    yearly: "$99",
   },
 };
 
 function PaymentsPage() {
-  const [tier, setTier] = useState<Tier>("ultra");
+  const [tier, setTier] = useState<Tier | null>(null);
   const [period, setPeriod] = useState<Period>("yearly");
   const [cardOpen, setCardOpen] = useState(false);
   const [couponOpen, setCouponOpen] = useState(false);
@@ -74,11 +59,12 @@ function PaymentsPage() {
     window.setTimeout(() => setPending(null), 1600);
   };
 
-  const spec = PLANS[tier];
-  const price = period === "yearly" ? spec.yearly.price : spec.monthly.price;
-  const subscribeLabel = `Subscribe to ${tier === "ultra" ? "Ultra" : "Pro"} — ${price}.00/${
-    period === "yearly" ? "year" : "month"
-  }`;
+  const spec = tier ? PLANS[tier] : null;
+  const subscribeLabel = spec
+    ? `Subscribe to ${spec.name} — ${period === "yearly" ? spec.yearly : spec.monthly}.00/${
+        period === "yearly" ? "year" : "month"
+      }`
+    : "Subscribe";
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -86,54 +72,48 @@ function PaymentsPage() {
 
       <div className="flex-1 overflow-y-auto px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
         <h1 className="font-display text-[30px] leading-tight text-foreground">Choose your plan</h1>
-        <p className="mt-1.5 text-[14px] text-muted-foreground">One tap. Tasks done for you.</p>
 
         {/* Billing period toggle */}
-        <div className="mt-5 flex items-center gap-3">
-          <div
-            role="radiogroup"
-            aria-label="Billing period"
-            className="grid flex-1 grid-cols-2 rounded-full bg-cream-foreground/6 p-1 ring-1 ring-cream-foreground/10"
-          >
-            {(["monthly", "yearly"] as const).map((p) => (
-              <button
-                key={p}
-                type="button"
-                role="radio"
-                aria-checked={period === p}
-                onClick={() => setPeriod(p)}
-                className={`h-10 rounded-full text-[13.5px] font-semibold capitalize transition-colors ${
-                  period === p
-                    ? "bg-cream text-cream-foreground shadow-sm"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-          {period === "yearly" ? (
-            <span className="shrink-0 rounded-full bg-primary/15 px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wide text-primary ring-1 ring-primary/30">
-              Save up to 17%
-            </span>
-          ) : null}
+        <div
+          role="radiogroup"
+          aria-label="Billing period"
+          className="mt-5 grid grid-cols-2 rounded-full bg-cream-foreground/6 p-1 ring-1 ring-cream-foreground/10"
+        >
+          {(["monthly", "yearly"] as const).map((p) => (
+            <button
+              key={p}
+              type="button"
+              role="radio"
+              aria-checked={period === p}
+              onClick={() => setPeriod(p)}
+              className={`h-10 rounded-full text-[13.5px] font-semibold capitalize transition-colors ${
+                period === p ? "bg-cream text-cream-foreground shadow-sm" : "text-muted-foreground"
+              }`}
+            >
+              {p}
+            </button>
+          ))}
         </div>
 
         {/* Plan cards */}
-        <div className="fade-up mt-4 space-y-4">
-          <PlanCard
-            spec={PLANS.ultra}
-            period={period}
-            featured
-            selected={tier === "ultra"}
-            onSelect={() => setTier("ultra")}
-          />
-          <PlanCard
-            spec={PLANS.pro}
-            period={period}
-            selected={tier === "pro"}
-            onSelect={() => setTier("pro")}
-          />
+        <div className="mt-4 space-y-4">
+          <div className="fade-up">
+            <PlanCard
+              spec={PLANS.ultra}
+              period={period}
+              featured
+              selected={tier === "ultra"}
+              onSelect={() => setTier("ultra")}
+            />
+          </div>
+          <div className="fade-up">
+            <PlanCard
+              spec={PLANS.pro}
+              period={period}
+              selected={tier === "pro"}
+              onSelect={() => setTier("pro")}
+            />
+          </div>
         </div>
 
         {/* Coupon — quiet */}
@@ -185,16 +165,23 @@ function PaymentsPage() {
           )}
         </div>
 
-        {/* Checkout */}
-        <section className="fade-up mt-4 rounded-3xl bg-cream p-5 text-cream-foreground">
+        {/* Checkout — inactive until a plan is chosen */}
+        <section
+          aria-disabled={tier === null}
+          className={`fade-up mt-4 rounded-3xl bg-cream p-5 text-cream-foreground transition-opacity duration-200 ${
+            tier === null ? "pointer-events-none opacity-45" : ""
+          }`}
+        >
           <p className="mb-4 text-[12px] font-medium uppercase tracking-[0.14em] text-cream-foreground/50">
-            Checking out: {spec.name} · {period === "yearly" ? "Yearly" : "Monthly"}
+            {spec
+              ? `Checking out: Asmi ${spec.name} · ${period === "yearly" ? "Yearly" : "Monthly"}`
+              : "Choose a plan above to check out"}
           </p>
 
           <ApplePayButton
             onPay={() => start("apple")}
             pending={pending === "apple"}
-            disabled={pending !== null}
+            disabled={pending !== null || tier === null}
           />
 
           <div className="my-4 flex items-center gap-3">
@@ -212,13 +199,13 @@ function PaymentsPage() {
               onToggle={() => setCardOpen((v) => !v)}
               pending={pending === "card"}
               onSubscribe={() => start("card")}
-              disabled={pending !== null}
+              disabled={pending !== null || tier === null}
             />
 
             <button
               type="button"
               onClick={() => start("link")}
-              disabled={pending !== null}
+              disabled={pending !== null || tier === null}
               className="flex h-[52px] w-full items-center justify-between gap-3 px-4 text-left disabled:opacity-60"
             >
               <span className="flex items-center gap-2.5 text-[15px] font-semibold text-cream-foreground">

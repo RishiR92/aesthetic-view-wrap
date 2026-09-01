@@ -3,10 +3,9 @@ import { Check, Sparkles } from "lucide-react";
 export interface PlanSpec {
   id: "pro" | "ultra";
   name: string;
-  tagline: string;
-  monthly: { price: string; note: string };
-  yearly: { price: string; note: string };
-  benefits: string[];
+  tasks: string;
+  monthly: string;
+  yearly: string;
 }
 
 export function PlanCard({
@@ -26,72 +25,80 @@ export function PlanCard({
 
   return (
     <div
-      className={`overflow-hidden rounded-3xl transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        selected
-          ? "scale-[1.01] shadow-[var(--shadow-lift)]"
-          : "scale-[0.99] opacity-90"
+      className={`transition-[transform,box-shadow,opacity] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        selected ? "scale-[1.01] shadow-[var(--shadow-lift)]" : "scale-[0.99]"
       }`}
     >
-      <div className={`rounded-3xl ring-1 ${selected ? "ring-primary" : "ring-cream-foreground/10"} ${featured ? "" : "bg-cream"}`}>
+      <div
+        role="button"
+        tabIndex={0}
+        aria-pressed={selected}
+        onClick={onSelect}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onSelect();
+          }
+        }}
+        className={`relative cursor-pointer overflow-hidden rounded-3xl p-6 ring-1 transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+          featured
+            ? "bg-background text-cream"
+            : "bg-cream text-cream-foreground"
+        } ${selected ? "ring-primary" : featured ? "ring-cream/10" : "ring-cream-foreground/10"}`}
+      >
         {featured ? (
-          /* Ultra hero band */
-          <div className="relative overflow-hidden rounded-t-3xl bg-background px-5 pb-5 pt-6">
-            {/* spotlight bloom */}
+          <>
             <div
               aria-hidden
-              className="pointer-events-none absolute -top-16 right-[-40px] size-48 rounded-full bg-primary/25 blur-3xl"
+              className="pointer-events-none absolute -top-20 right-[-48px] size-56 rounded-full bg-primary/25 blur-3xl"
             />
             <span className="absolute right-0 top-0 rounded-bl-2xl bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
               Most popular
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1 text-[10.5px] font-bold uppercase tracking-[0.16em] text-primary ring-1 ring-primary/30">
-              <Sparkles className="size-3" strokeWidth={2.5} />
-              Ultra
-            </span>
-            <h3 className="mt-2.5 font-display text-[26px] italic leading-none text-cream">
-              Asmi Ultra
-            </h3>
-            <p className="mt-1.5 text-[12.5px] text-cream/60">{spec.tagline}</p>
-          </div>
+          </>
         ) : null}
 
-        <div className={`bg-cream p-5 text-cream-foreground ${featured ? "rounded-b-3xl" : "rounded-3xl"}`}>
-          {!featured ? (
+        <span
+          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-[0.16em] ring-1 ${
+            featured
+              ? "bg-primary/15 text-primary ring-primary/30"
+              : "bg-cream-foreground/6 text-cream-foreground/60 ring-cream-foreground/12"
+          }`}
+        >
+          {featured ? <Sparkles className="size-3" strokeWidth={2.5} /> : null}
+          {spec.name}
+        </span>
+
+        <div className="mt-4 flex items-baseline gap-2">
+          <span className="font-display text-[56px] leading-none tracking-tight">{spec.tasks}</span>
+          <span className={`text-[14px] ${featured ? "text-cream/60" : "text-cream-foreground/55"}`}>
+            tasks / month
+          </span>
+        </div>
+
+        <p className={`mt-2 text-[15px] font-medium ${featured ? "text-cream/80" : "text-cream-foreground/70"}`}>
+          {price}
+          <span className={featured ? "text-cream/45" : "text-cream-foreground/45"}>
+            {" "}
+            {period === "yearly" ? "/ year" : "/ month"}
+          </span>
+        </p>
+
+        <div
+          className={`mt-5 flex h-[52px] w-full items-center justify-center gap-2 rounded-full text-[15px] font-semibold transition-transform active:scale-[0.99] ${
+            featured
+              ? "cta-fill"
+              : "ring-1 ring-cream-foreground/25"
+          }`}
+        >
+          {selected ? (
             <>
-              <h3 className="font-display text-[22px] leading-none">{spec.name}</h3>
-              <p className="mt-1 text-[12.5px] text-cream-foreground/60">{spec.tagline}</p>
+              <Check className="size-4" strokeWidth={2.5} />
+              Selected
             </>
-          ) : null}
-
-          <div className={`flex items-baseline gap-1.5 ${featured ? "" : "mt-3"}`}>
-            <span className="font-display text-[34px] leading-none">{price.price}</span>
-            <span className="text-[13px] text-cream-foreground/55">
-              {period === "yearly" ? "/yr" : "/mo"}
-            </span>
-          </div>
-          <p className="mt-1 text-[11.5px] text-cream-foreground/55">{price.note}</p>
-
-          <ul className="mt-4 space-y-2.5 border-t border-cream-foreground/12 pt-4">
-            {spec.benefits.map((b) => (
-              <li key={b} className="flex items-start gap-2.5 text-[13.5px] leading-snug">
-                <Check className="mt-[2px] size-4 shrink-0 text-primary" strokeWidth={2.5} />
-                {b}
-              </li>
-            ))}
-          </ul>
-
-          <button
-            type="button"
-            onClick={onSelect}
-            aria-pressed={selected}
-            className={
-              featured
-                ? "cta-fill mt-5 flex h-[52px] w-full items-center justify-center rounded-full text-[15px] font-semibold transition-transform active:scale-[0.99]"
-                : "mt-5 flex h-[52px] w-full items-center justify-center rounded-full text-[15px] font-semibold ring-1 ring-cream-foreground/25 transition-transform active:scale-[0.99]"
-            }
-          >
-            {featured ? (selected ? "Ultra selected" : "Go Ultra") : selected ? "Pro selected" : "Choose Pro"}
-          </button>
+          ) : (
+            `Choose ${spec.id === "ultra" ? "Ultra" : "Pro"}`
+          )}
         </div>
       </div>
     </div>
