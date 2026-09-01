@@ -105,7 +105,7 @@ function PaymentsPage() {
                 className={`h-10 rounded-full text-[13.5px] font-semibold capitalize transition-colors ${
                   period === p
                     ? "bg-cream text-cream-foreground shadow-sm"
-                    : "text-cream-foreground/60"
+                    : "text-muted-foreground"
                 }`}
               >
                 {p}
