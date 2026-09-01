@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Lock, Tag } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { ApplePayButton } from "@/components/apple-pay-button";
+import { BillingSwitch, type Period } from "@/components/billing-switch";
 import { CardAccordion } from "@/components/card-form";
 import { PlanCard, type PlanSpec } from "@/components/plan-card";
 import { TopBar } from "@/components/top-bar";
