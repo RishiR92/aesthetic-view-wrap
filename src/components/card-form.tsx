@@ -2,14 +2,14 @@ import { ChevronUp, CreditCard } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export function CardAccordion({
-  plan,
+  label,
   open,
   onToggle,
   pending,
   onSubscribe,
   disabled,
 }: {
-  plan: "monthly" | "yearly";
+  label: string;
   open: boolean;
   onToggle: () => void;
   pending?: boolean | undefined;
