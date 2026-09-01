@@ -13,12 +13,14 @@ export function PlanCard({
   period,
   selected,
   featured,
+  shimmer,
   onSelect,
 }: {
   spec: PlanSpec;
   period: "monthly" | "yearly";
   selected: boolean;
   featured?: boolean | undefined;
+  shimmer?: boolean | undefined;
   onSelect: () => void;
 }) {
   const price = period === "yearly" ? spec.yearly : spec.monthly;
