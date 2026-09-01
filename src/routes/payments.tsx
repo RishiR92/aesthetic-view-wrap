@@ -78,11 +78,11 @@ function PaymentsPage() {
     <div className="flex min-h-0 flex-1 flex-col">
       <TopBar />
 
-      <div className="flex-1 overflow-y-auto px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
+      <div className="flex-1 overflow-y-auto px-5 pb-[max(3.5rem,env(safe-area-inset-bottom))]">
         <h1 className="font-display text-[30px] leading-tight text-foreground">Choose your plan</h1>
 
         {/* Billing period switch */}
-        <div className="mt-5">
+        <div className="mt-4">
           <BillingSwitch period={period} onChange={changePeriod} />
         </div>
 
@@ -161,11 +161,11 @@ function PaymentsPage() {
         {/* Checkout — inactive until a plan is chosen */}
         <section
           aria-disabled={tier === null}
-          className={`fade-up mt-4 rounded-3xl bg-cream p-5 text-cream-foreground transition-opacity duration-200 ${
+          className={`fade-up mt-4 rounded-3xl bg-cream p-4 text-cream-foreground transition-opacity duration-200 ${
             tier === null ? "pointer-events-none opacity-45" : ""
           }`}
         >
-          <p className="mb-4 text-[12px] font-medium uppercase tracking-[0.14em] text-cream-foreground/50">
+          <p className="mb-3 text-[12px] font-medium uppercase tracking-[0.14em] text-cream-foreground/50">
             {spec
               ? `Checking out: Asmi ${spec.name} · ${period === "yearly" ? "Yearly" : "Monthly"}`
               : "Choose a plan above to check out"}
