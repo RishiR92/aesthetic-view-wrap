@@ -49,7 +49,7 @@ export function BillingSwitch({
         <span
           className={`inline-flex items-center gap-0.5 rounded-full px-1.5 py-px text-[9.5px] font-bold uppercase tracking-[0.08em] transition-colors duration-200 ${
             yearly
-              ? "bg-primary/15 text-primary"
+              ? "bg-primary text-primary-foreground"
               : "bg-cream-foreground/8 text-muted-foreground/70"
           }`}
         >
