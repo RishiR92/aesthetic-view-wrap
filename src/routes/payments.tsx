@@ -1,24 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Lock, Tag } from "lucide-react";
+import { Lock, Tag } from "lucide-react";
 import { useState } from "react";
 
 import { ApplePayButton } from "@/components/apple-pay-button";
 import { CardAccordion } from "@/components/card-form";
+import { PlanCard, type PlanSpec } from "@/components/plan-card";
 import { TopBar } from "@/components/top-bar";
 
 export const Route = createFileRoute("/payments")({
   head: () => ({
     meta: [
-      { title: "Asmi Unlimited — one plan, unlimited tasks" },
+      { title: "Asmi plans — Pro & Ultra" },
       {
         name: "description",
         content:
-          "Subscribe to Asmi Unlimited: unlimited tasks, monthly or yearly, cancel anytime.",
+          "Choose Asmi Pro or Asmi Ultra: tasks done for you via calls, texts and emails. Monthly or yearly, cancel anytime.",
       },
-      { property: "og:title", content: "Asmi Unlimited — one plan, unlimited tasks" },
+      { property: "og:title", content: "Asmi plans — Pro & Ultra" },
       {
         property: "og:description",
-        content: "One plan. Unlimited tasks, done for you.",
+        content: "One tap. Tasks done for you.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -27,35 +28,41 @@ export const Route = createFileRoute("/payments")({
   component: PaymentsPage,
 });
 
-type PlanId = "monthly" | "yearly";
+type Tier = "pro" | "ultra";
+type Period = "monthly" | "yearly";
 
-const PLANS: {
-  id: PlanId;
-  label: string;
-  price: string;
-  period: string;
-  note: string;
-  badge?: string;
-}[] = [
-  { id: "monthly", label: "Monthly", price: "$10", period: "/mo", note: "Billed monthly" },
-  {
-    id: "yearly",
-    label: "Yearly",
-    price: "$99",
-    period: "/yr",
-    note: "$8.25/mo, billed yearly",
-    badge: "Best value",
+const PLANS: Record<Tier, PlanSpec> = {
+  ultra: {
+    id: "ultra",
+    name: "Asmi Ultra",
+    tagline: "For people who hand everything off.",
+    monthly: { price: "$49", note: "Billed monthly" },
+    yearly: { price: "$499", note: "$41.58/mo, billed yearly" },
+    benefits: [
+      "100 tasks every month",
+      "Priority execution — your calls, texts & emails jump the queue",
+      "Reminders, follow-ups and coordination handled",
+      "Cancel anytime",
+    ],
   },
-];
-
-const INCLUDED = [
-  "Unlimited tasks, every month",
-  "Asmi completes task via calls, texts & emails.",
-  "Reminders, follow-ups and coordination handled.",
-];
+  pro: {
+    id: "pro",
+    name: "Asmi Pro",
+    tagline: "Everyday help, handled.",
+    monthly: { price: "$10", note: "Billed monthly" },
+    yearly: { price: "$99", note: "$8.25/mo, billed yearly" },
+    benefits: [
+      "20 tasks every month",
+      "Asmi completes tasks via calls, texts & emails",
+      "Reminders and follow-ups handled",
+      "Cancel anytime",
+    ],
+  },
+};
 
 function PaymentsPage() {
-  const [plan, setPlan] = useState<PlanId>("yearly");
+  const [tier, setTier] = useState<Tier>("ultra");
+  const [period, setPeriod] = useState<Period>("yearly");
   const [cardOpen, setCardOpen] = useState(false);
   const [couponOpen, setCouponOpen] = useState(false);
   const [coupon, setCoupon] = useState("");
@@ -67,113 +74,123 @@ function PaymentsPage() {
     window.setTimeout(() => setPending(null), 1600);
   };
 
+  const spec = PLANS[tier];
+  const price = period === "yearly" ? spec.yearly.price : spec.monthly.price;
+  const subscribeLabel = `Subscribe to ${tier === "ultra" ? "Ultra" : "Pro"} — ${price}.00/${
+    period === "yearly" ? "year" : "month"
+  }`;
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <TopBar />
 
       <div className="flex-1 overflow-y-auto px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
-        <h1 className="font-display text-[30px] leading-tight text-foreground">Asmi Unlimited</h1>
-        <p className="mt-1.5 text-[14px] text-muted-foreground">One plan. Unlimited tasks.</p>
+        <h1 className="font-display text-[30px] leading-tight text-foreground">Choose your plan</h1>
+        <p className="mt-1.5 text-[14px] text-muted-foreground">One tap. Tasks done for you.</p>
 
-        {/* Plan card */}
-        <section className="fade-up mt-5 rounded-3xl bg-cream p-5 text-cream-foreground">
-          <div role="radiogroup" aria-label="Billing period" className="grid grid-cols-2 gap-2.5">
-            {PLANS.map((p) => {
-              const active = plan === p.id;
-              return (
-                <button
-                  key={p.id}
-                  type="button"
-                  role="radio"
-                  aria-checked={active}
-                  onClick={() => {
-                    setPlan(p.id);
-                    if (cardOpen) setCardOpen(false);
-                  }}
-                  className={`relative overflow-hidden rounded-2xl p-3.5 pt-5 text-left transition-[transform,box-shadow,opacity] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    active
-                      ? "bg-primary/12 shadow-[var(--shadow-lift)] ring-1 ring-primary"
-                      : "scale-[0.98] bg-cream-foreground/6 opacity-[0.78] ring-1 ring-cream-foreground/10"
-                  }`}
-                >
-                  {p.badge ? (
-                    <span className="absolute left-0 top-0 rounded-br-xl bg-primary px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wider text-primary-foreground">
-                      {p.badge}
-                    </span>
-                  ) : null}
-                  <span className="flex items-baseline gap-1">
-                    <span className="font-display text-[30px] leading-none">{p.price}</span>
-                    <span className="text-[13px] text-cream-foreground/60">{p.period}</span>
-                  </span>
-                  <span className="mt-1.5 block text-[11.5px] leading-snug text-cream-foreground/55">
-                    {p.note}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          <ul className="mt-5 space-y-2.5 border-t border-cream-foreground/12 pt-4">
-            {INCLUDED.map((item) => (
-              <li key={item} className="flex items-start gap-2.5 text-[13.5px] leading-snug">
-                <Check className="mt-[2px] size-4 shrink-0 text-primary" strokeWidth={2.5} />
-                {item}
-              </li>
+        {/* Billing period toggle */}
+        <div className="mt-5 flex items-center gap-3">
+          <div
+            role="radiogroup"
+            aria-label="Billing period"
+            className="grid flex-1 grid-cols-2 rounded-full bg-cream-foreground/6 p-1 ring-1 ring-cream-foreground/10"
+          >
+            {(["monthly", "yearly"] as const).map((p) => (
+              <button
+                key={p}
+                type="button"
+                role="radio"
+                aria-checked={period === p}
+                onClick={() => setPeriod(p)}
+                className={`h-10 rounded-full text-[13.5px] font-semibold capitalize transition-colors ${
+                  period === p
+                    ? "bg-cream text-cream-foreground shadow-sm"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {p}
+              </button>
             ))}
-          </ul>
+          </div>
+          {period === "yearly" ? (
+            <span className="shrink-0 rounded-full bg-primary/15 px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wide text-primary ring-1 ring-primary/30">
+              Save up to 17%
+            </span>
+          ) : null}
+        </div>
 
-          {/* Coupon — quiet, above payment */}
-          <div className="mt-4">
-            {applied ? (
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-[12.5px] font-semibold text-cream-foreground">
-                  <Tag className="mr-1.5 inline size-3.5 text-primary" strokeWidth={2} />
-                  {applied} applied
-                </span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setApplied(null);
-                    setCoupon("");
-                  }}
-                  className="text-[12px] font-medium text-cream-foreground/60 underline"
-                >
-                  Remove
-                </button>
-              </div>
-            ) : couponOpen ? (
-              <div className="flex items-center gap-2">
-                <input
-                  autoFocus
-                  value={coupon}
-                  onChange={(e) => setCoupon(e.target.value.toUpperCase())}
-                  placeholder="Coupon code"
-                  aria-label="Coupon code"
-                  className="h-10 min-w-0 flex-1 rounded-2xl bg-cream-foreground/6 px-3.5 text-[13.5px] tracking-wide text-cream-foreground outline-none placeholder:text-cream-foreground/40 focus:ring-1 focus:ring-primary"
-                />
-                <button
-                  type="button"
-                  disabled={!coupon.trim()}
-                  onClick={() => setApplied(coupon.trim())}
-                  className="h-10 shrink-0 rounded-2xl px-4 text-[13px] font-semibold text-primary transition-transform active:scale-[0.99] disabled:opacity-40"
-                >
-                  Apply
-                </button>
-              </div>
-            ) : (
+        {/* Plan cards */}
+        <div className="fade-up mt-4 space-y-4">
+          <PlanCard
+            spec={PLANS.ultra}
+            period={period}
+            featured
+            selected={tier === "ultra"}
+            onSelect={() => setTier("ultra")}
+          />
+          <PlanCard
+            spec={PLANS.pro}
+            period={period}
+            selected={tier === "pro"}
+            onSelect={() => setTier("pro")}
+          />
+        </div>
+
+        {/* Coupon — quiet */}
+        <div className="mt-4">
+          {applied ? (
+            <div className="flex items-center justify-between gap-2 rounded-2xl bg-cream p-3.5 text-cream-foreground">
+              <span className="text-[12.5px] font-semibold">
+                <Tag className="mr-1.5 inline size-3.5 text-primary" strokeWidth={2} />
+                {applied} applied
+              </span>
               <button
                 type="button"
-                onClick={() => setCouponOpen(true)}
-                className="text-[12.5px] font-medium text-cream-foreground/65 underline underline-offset-2"
+                onClick={() => {
+                  setApplied(null);
+                  setCoupon("");
+                }}
+                className="text-[12px] font-medium text-cream-foreground/60 underline"
               >
-                Have a coupon code?
+                Remove
               </button>
-            )}
-          </div>
-        </section>
+            </div>
+          ) : couponOpen ? (
+            <div className="flex items-center gap-2 rounded-2xl bg-cream p-2 pl-1.5">
+              <input
+                autoFocus
+                value={coupon}
+                onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+                placeholder="Coupon code"
+                aria-label="Coupon code"
+                className="h-10 min-w-0 flex-1 rounded-2xl bg-cream-foreground/6 px-3.5 text-[13.5px] tracking-wide text-cream-foreground outline-none placeholder:text-cream-foreground/40 focus:ring-1 focus:ring-primary"
+              />
+              <button
+                type="button"
+                disabled={!coupon.trim()}
+                onClick={() => setApplied(coupon.trim())}
+                className="h-10 shrink-0 rounded-2xl px-4 text-[13px] font-semibold text-primary transition-transform active:scale-[0.99] disabled:opacity-40"
+              >
+                Apply
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setCouponOpen(true)}
+              className="text-[12.5px] font-medium text-muted-foreground underline underline-offset-2"
+            >
+              Have a coupon code?
+            </button>
+          )}
+        </div>
 
         {/* Checkout */}
         <section className="fade-up mt-4 rounded-3xl bg-cream p-5 text-cream-foreground">
+          <p className="mb-4 text-[12px] font-medium uppercase tracking-[0.14em] text-cream-foreground/50">
+            Checking out: {spec.name} · {period === "yearly" ? "Yearly" : "Monthly"}
+          </p>
+
           <ApplePayButton
             onPay={() => start("apple")}
             pending={pending === "apple"}
@@ -190,7 +207,7 @@ function PaymentsPage() {
 
           <div className="divide-y divide-cream-foreground/10 overflow-hidden rounded-2xl ring-1 ring-cream-foreground/10">
             <CardAccordion
-              plan={plan}
+              label={subscribeLabel}
               open={cardOpen}
               onToggle={() => setCardOpen((v) => !v)}
               pending={pending === "card"}

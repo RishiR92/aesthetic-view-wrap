@@ -2,14 +2,14 @@ import { ChevronUp, CreditCard } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export function CardAccordion({
-  plan,
+  label,
   open,
   onToggle,
   pending,
   onSubscribe,
   disabled,
 }: {
-  plan: "monthly" | "yearly";
+  label: string;
   open: boolean;
   onToggle: () => void;
   pending?: boolean | undefined;
@@ -28,8 +28,6 @@ export function CardAccordion({
       window.setTimeout(() => firstInputRef.current?.focus(), 180);
     }
   }, [open]);
-
-  const label = plan === "yearly" ? "Subscribe for $99.00/year" : "Subscribe for $10.00/month";
 
   return (
     <div
