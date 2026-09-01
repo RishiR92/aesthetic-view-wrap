@@ -58,6 +58,22 @@ export function PlanCard({
           </>
         ) : null}
 
+        {/* Selection check */}
+        <span
+          aria-hidden
+          className={`absolute bottom-5 right-5 grid size-6 place-items-center rounded-full transition-all duration-200 ${
+            selected
+              ? "scale-100 bg-primary text-primary-foreground"
+              : `scale-90 ring-1 ${
+                  featured
+                    ? "ring-cream/25"
+                    : "ring-cream-foreground/20"
+                }`
+          }`}
+        >
+          {selected ? <Check className="size-3.5" strokeWidth={3} /> : null}
+        </span>
+
         <span
           className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-[0.16em] ring-1 ${
             featured
@@ -76,30 +92,18 @@ export function PlanCard({
           </span>
         </div>
 
-        <p className={`mt-2 text-[15px] font-medium ${featured ? "text-cream/80" : "text-cream-foreground/70"}`}>
+        <p
+          key={period}
+          className={`price-roll mt-2 text-[15px] font-medium ${
+            featured ? "text-cream/80" : "text-cream-foreground/70"
+          }`}
+        >
           {price}
           <span className={featured ? "text-cream/45" : "text-cream-foreground/45"}>
             {" "}
             {period === "yearly" ? "/ year" : "/ month"}
           </span>
         </p>
-
-        <div
-          className={`mt-5 flex h-[52px] w-full items-center justify-center gap-2 rounded-full text-[15px] font-semibold transition-transform active:scale-[0.99] ${
-            featured
-              ? "cta-fill"
-              : "ring-1 ring-cream-foreground/25"
-          }`}
-        >
-          {selected ? (
-            <>
-              <Check className="size-4" strokeWidth={2.5} />
-              Selected
-            </>
-          ) : (
-            `Choose ${spec.id === "ultra" ? "Ultra" : "Pro"}`
-          )}
-        </div>
       </div>
     </div>
   );
