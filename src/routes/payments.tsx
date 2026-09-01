@@ -27,7 +27,6 @@ export const Route = createFileRoute("/payments")({
 });
 
 type Tier = "pro" | "ultra";
-type Period = "monthly" | "yearly";
 
 const PLANS: Record<Tier, PlanSpec> = {
   ultra: {
@@ -49,11 +48,23 @@ const PLANS: Record<Tier, PlanSpec> = {
 function PaymentsPage() {
   const [tier, setTier] = useState<Tier | null>(null);
   const [period, setPeriod] = useState<Period>("yearly");
+  const [shimmer, setShimmer] = useState(false);
+  const shimmerTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [cardOpen, setCardOpen] = useState(false);
   const [couponOpen, setCouponOpen] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [applied, setApplied] = useState<string | null>(null);
   const [pending, setPending] = useState<"apple" | "link" | "card" | null>(null);
+
+  const changePeriod = (p: Period) => {
+    if (p === period) return;
+    setPeriod(p);
+    if (p === "yearly") {
+      setShimmer(true);
+      if (shimmerTimer.current) clearTimeout(shimmerTimer.current);
+      shimmerTimer.current = setTimeout(() => setShimmer(false), 950);
+    }
+  };
 
   const start = (method: "apple" | "link" | "card") => {
     setPending(method);
@@ -61,11 +72,7 @@ function PaymentsPage() {
   };
 
   const spec = tier ? PLANS[tier] : null;
-  const subscribeLabel = spec
-    ? `Subscribe to ${spec.name} — ${period === "yearly" ? spec.yearly : spec.monthly}.00/${
-        period === "yearly" ? "year" : "month"
-      }`
-    : "Subscribe";
+  const subscribeLabel = spec ? `Subscribe to ${spec.name}` : "Subscribe";
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
