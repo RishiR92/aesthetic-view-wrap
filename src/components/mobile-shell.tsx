@@ -12,8 +12,10 @@ export function MobileShell({ children }: { children: ReactNode }) {
         />
       </div>
 
-      <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background sm:h-[860px] sm:max-h-[calc(100vh-4rem)] sm:min-h-0 sm:w-[420px] sm:rounded-shell sm:border sm:border-border/60 sm:shadow-[0_40px_100px_-20px_oklch(0.15_0.03_305/70%)]">
+      <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background sm:h-[880px] sm:max-h-[calc(100vh-3rem)] sm:min-h-0 sm:w-[420px] sm:rounded-shell sm:border sm:border-border/60 sm:shadow-[0_40px_100px_-20px_oklch(0.15_0.03_305/70%)]">
         {children}
+        {/* Scroll fade — makes clipped content read as intentional */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-14 bg-gradient-to-t from-background to-transparent" />
       </div>
     </div>
   );
