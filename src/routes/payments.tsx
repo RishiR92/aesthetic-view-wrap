@@ -81,26 +81,9 @@ function PaymentsPage() {
       <div className="flex-1 overflow-y-auto px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
         <h1 className="font-display text-[30px] leading-tight text-foreground">Choose your plan</h1>
 
-        {/* Billing period toggle */}
-        <div
-          role="radiogroup"
-          aria-label="Billing period"
-          className="mt-5 grid grid-cols-2 rounded-full bg-cream-foreground/6 p-1 ring-1 ring-cream-foreground/10"
-        >
-          {(["monthly", "yearly"] as const).map((p) => (
-            <button
-              key={p}
-              type="button"
-              role="radio"
-              aria-checked={period === p}
-              onClick={() => setPeriod(p)}
-              className={`h-10 rounded-full text-[13.5px] font-semibold capitalize transition-colors ${
-                period === p ? "bg-cream text-cream-foreground shadow-sm" : "text-muted-foreground"
-              }`}
-            >
-              {p}
-            </button>
-          ))}
+        {/* Billing period switch */}
+        <div className="mt-5">
+          <BillingSwitch period={period} onChange={changePeriod} />
         </div>
 
         {/* Plan cards */}
@@ -110,6 +93,7 @@ function PaymentsPage() {
               spec={PLANS.ultra}
               period={period}
               featured
+              shimmer={shimmer}
               selected={tier === "ultra"}
               onSelect={() => setTier("ultra")}
             />
@@ -118,6 +102,7 @@ function PaymentsPage() {
             <PlanCard
               spec={PLANS.pro}
               period={period}
+              shimmer={shimmer}
               selected={tier === "pro"}
               onSelect={() => setTier("pro")}
             />
