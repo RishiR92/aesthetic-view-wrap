@@ -35,7 +35,7 @@ export function PlanCard({
       <div className={`rounded-3xl ring-1 ${selected ? "ring-primary" : "ring-cream-foreground/10"} ${featured ? "" : "bg-cream"}`}>
         {featured ? (
           /* Ultra hero band */
-          <div className="relative overflow-hidden rounded-t-3xl bg-panel px-5 pb-5 pt-6">
+          <div className="relative overflow-hidden rounded-t-3xl bg-background px-5 pb-5 pt-6">
             {/* spotlight bloom */}
             <div
               aria-hidden
