@@ -1,4 +1,4 @@
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, Zap } from "lucide-react";
 
 export interface PlanSpec {
   id: "pro" | "ultra";
@@ -83,7 +83,11 @@ export function PlanCard({
               : "bg-cream-foreground/6 text-cream-foreground/60 ring-cream-foreground/12"
           }`}
         >
-          {featured ? <Sparkles className="size-3" strokeWidth={2.5} /> : null}
+          {featured ? (
+            <Sparkles className="size-3" strokeWidth={2.5} />
+          ) : (
+            <Zap className="size-3" strokeWidth={2.5} />
+          )}
           {spec.name}
         </span>
 
