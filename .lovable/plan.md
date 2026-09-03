@@ -1,38 +1,28 @@
 # Asmi plans — iMessage card, rebuilt for Pro & Ultra
 
-Rebuild the shareable chat card (1344×512, same rounded-corner iMessage proportions as the status cards) so it now communicates **two plans instead of "Asmi Unlimited"** — with no dollar amounts on the card.
+Rebuild the shareable chat card (1344×512, same rounded-corner iMessage proportions as the status cards) to communicate **two plans** with almost no text — just a glance.
 
-## Why no price on the card
+## Direction
 
-Price in a chat bubble invites comparison shopping and dates the asset the moment pricing moves. The card's job is one thing: make the choice legible in a two-second glance. So the card sells **capacity**, not cost — the number of tasks Asmi handles for you each month — and pricing lives one tap away on the payments screen where it belongs.
+Less is more. The card should feel like a whispered choice between two speeds, not a pricing table. No prices, no feature bullets, no paragraphs.
 
-## What the card says
+## Composition
 
-Left third — the voice:
-- Small amber eyebrow: `TWO WAYS TO RUN ASMI`
-- Instrument Serif line: *"Tasks, done for you."*
+- Deep plum-black field with subtle grain and generous negative space, matching the final status cards.
+- Two quiet panels sharing one baseline:
+  - Left: small cream label `PRO` above a giant `20`, then `tasks` in thin type.
+  - Right: small amber label `ULTRA` above a giant `100`, then `tasks` in thin type.
+- The `100` is the visual anchor — larger, brighter, with a soft amber spotlight bloom behind the Ultra panel so the eye lands there first.
+- A single amber hairline or dot marks Ultra as the highlighted path; Pro stays flat and restrained.
+- Bottom edge, whisper-small: `calls · texts · emails` — or omit entirely if it competes.
 
-Right two-thirds — two quiet panels sharing one baseline:
+## Typography
 
-```text
-   PRO                     ULTRA  ·  most popular
-   20                      100
-   tasks / month           tasks / month
-```
-
-- **Pro** — flat, restrained, cream-on-plum, no glow. The sensible one.
-- **Ultra** — lifted panel with the amber spotlight bloom behind it, thin gold hairline, small amber "MOST POPULAR" tick. It reads brighter and slightly larger so the eye lands there first.
-- Both giant numbers in Instrument Serif, set on a shared baseline so the 100 vs 20 contrast does the persuading — no bullets, no feature list.
-
-Bottom hairline, whisper-small: `Calls · texts · emails handled · cancel anytime`
-
-## Visual system (matches the app)
-
-- Deep plum-black field, subtle grain, generous negative space — same treatment as the final status cards you approved.
-- One amber-gold accent, cream-white type, no logo lockup, no handles.
-- 1344×512, rounded corners consistent with the existing chat assets.
+- Giant numbers in a refined display serif (Instrument Serif style), cream-white.
+- Labels in tiny uppercase sans, generous tracking.
+- One amber accent only; everything else is cream on plum-black.
 
 ## Deliverable
 
 - `asmi-plans-card.png` (1344×512) in your documents.
-- No app code changes in this pass — this is the shareable asset only. Say the word if you also want the same two-panel treatment mirrored inside `/payments`.
+- No app code changes in this pass — shareable asset only.
