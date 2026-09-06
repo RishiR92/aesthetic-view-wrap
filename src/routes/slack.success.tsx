@@ -5,12 +5,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 type SlackSuccessSearch = {
-  workspace?: string;
+  workspace: string | undefined;
 };
 
 export const Route = createFileRoute("/slack/success")({
   validateSearch: (search: Record<string, unknown>): SlackSuccessSearch => ({
-    workspace: typeof search.workspace === "string" ? search.workspace : undefined,
+    workspace: typeof search["workspace"] === "string" ? search["workspace"] : undefined,
   }),
   head: () => ({
     meta: [

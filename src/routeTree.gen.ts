@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as RemindersIndexRouteImport } from './routes/reminders.index'
+import { Route as SlackSuccessRouteImport } from './routes/slack.success'
 import { Route as TaskTaskIdIndexRouteImport } from './routes/task.$taskId.index'
 import { Route as TaskTaskIdStatusRouteImport } from './routes/task.$taskId.status'
 
@@ -36,6 +37,11 @@ const RemindersIndexRoute = RemindersIndexRouteImport.update({
   path: '/reminders/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlackSuccessRoute = SlackSuccessRouteImport.update({
+  id: '/slack/success',
+  path: '/slack/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TaskTaskIdIndexRoute = TaskTaskIdIndexRouteImport.update({
   id: '/task/$taskId/',
   path: '/task/$taskId/',
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
   '/payments': typeof PaymentsRoute
+  '/slack/success': typeof SlackSuccessRoute
   '/reminders/': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId/': typeof TaskTaskIdIndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
   '/payments': typeof PaymentsRoute
+  '/slack/success': typeof SlackSuccessRoute
   '/reminders': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId': typeof TaskTaskIdIndexRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
   '/payments': typeof PaymentsRoute
+  '/slack/success': typeof SlackSuccessRoute
   '/reminders/': typeof RemindersIndexRoute
   '/task/$taskId/status': typeof TaskTaskIdStatusRoute
   '/task/$taskId/': typeof TaskTaskIdIndexRoute
@@ -78,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/history'
     | '/payments'
+    | '/slack/success'
     | '/reminders/'
     | '/task/$taskId/status'
     | '/task/$taskId/'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/history'
     | '/payments'
+    | '/slack/success'
     | '/reminders'
     | '/task/$taskId/status'
     | '/task/$taskId'
@@ -94,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/history'
     | '/payments'
+    | '/slack/success'
     | '/reminders/'
     | '/task/$taskId/status'
     | '/task/$taskId/'
@@ -103,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HistoryRoute: typeof HistoryRoute
   PaymentsRoute: typeof PaymentsRoute
+  SlackSuccessRoute: typeof SlackSuccessRoute
   RemindersIndexRoute: typeof RemindersIndexRoute
   TaskTaskIdStatusRoute: typeof TaskTaskIdStatusRoute
   TaskTaskIdIndexRoute: typeof TaskTaskIdIndexRoute
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RemindersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/slack/success': {
+      id: '/slack/success'
+      path: '/slack/success'
+      fullPath: '/slack/success'
+      preLoaderRoute: typeof SlackSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/task/$taskId/': {
       id: '/task/$taskId/'
       path: '/task/$taskId'
@@ -159,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HistoryRoute: HistoryRoute,
   PaymentsRoute: PaymentsRoute,
+  SlackSuccessRoute: SlackSuccessRoute,
   RemindersIndexRoute: RemindersIndexRoute,
   TaskTaskIdStatusRoute: TaskTaskIdStatusRoute,
   TaskTaskIdIndexRoute: TaskTaskIdIndexRoute,
