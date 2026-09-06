@@ -87,10 +87,10 @@ function SlackSuccessPage() {
               </div>
             </div>
 
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+            <p className="mb-5 text-xs font-semibold uppercase text-primary">
               Connection complete
             </p>
-            <h1 className="font-success-display max-w-[700px] text-[clamp(2.5rem,6vw,5.6rem)] font-semibold leading-[1.02]">
+            <h1 className="font-success-display max-w-[700px] text-5xl font-semibold leading-[1.02] sm:text-6xl xl:text-[76px]">
               Asmi is ready in Slack.
             </h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-success-muted sm:text-lg sm:leading-8">
@@ -108,7 +108,7 @@ function SlackSuccessPage() {
           <div className="w-full success-resolve [animation-delay:120ms]">
             <div className="flex items-start justify-between gap-5 border-b border-success-line pb-7">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-success-muted">
+                <p className="text-xs font-semibold uppercase text-success-muted">
                   Connected workspace
                 </p>
                 <h2 className="font-success-display mt-3 break-words text-2xl font-semibold text-success-ink">
