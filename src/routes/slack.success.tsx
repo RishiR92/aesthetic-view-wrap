@@ -14,15 +14,15 @@ export const Route = createFileRoute("/slack/success")({
   }),
   head: () => ({
     meta: [
-      { title: "Asmi is connected to Slack" },
+      { title: "Asmi for Slack — Real World Chores" },
       {
         name: "description",
-        content: "Asmi was successfully added to your Slack workspace.",
+        content: "Your AI for Real World Chores is now connected to your Slack workspace.",
       },
-      { property: "og:title", content: "Asmi is connected to Slack" },
+      { property: "og:title", content: "Asmi for Slack — Real World Chores" },
       {
         property: "og:description",
-        content: "Asmi was successfully added to your Slack workspace.",
+        content: "Your AI for Real World Chores is now connected to your Slack workspace.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -64,7 +64,8 @@ function SlackSuccessPage() {
 
           <Link
             to="/"
-            className="relative z-10 w-fit font-display text-[28px] italic text-success-ink transition-opacity hover:opacity-80"
+            aria-label="Asmi home"
+            className="relative z-10 w-fit font-display text-[38px] italic leading-none text-success-ink transition-opacity hover:opacity-80 sm:text-[44px]"
           >
             asmi
           </Link>
@@ -87,14 +88,15 @@ function SlackSuccessPage() {
               </div>
             </div>
 
-            <p className="mb-5 text-xs font-semibold uppercase text-primary">
-              Connection complete
+            <p className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase text-primary">
+              <Check className="size-3.5" strokeWidth={2.75} />
+              Asmi is ready in Slack
             </p>
             <h1 className="font-success-display max-w-[700px] text-5xl font-semibold leading-[1.02] sm:text-6xl xl:text-[76px]">
-              Asmi is ready in Slack.
+              Your AI for<br className="hidden sm:block" /> Real World Chores.
             </h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-success-muted sm:text-lg sm:leading-8">
-              Your team can now reach Asmi where work already happens. The connection is live and ready to use.
+              Your team can hand off calls, messages, bookings, and follow-ups directly from Slack. Asmi handles the work beyond the screen.
             </p>
           </div>
 
@@ -124,9 +126,9 @@ function SlackSuccessPage() {
               <div className="flex gap-3.5">
                 <SlackMark />
                 <div>
-                  <p className="text-sm font-semibold text-success-ink">Slack access is active</p>
+                  <p className="text-sm font-semibold text-success-ink">Ready for your team</p>
                   <p className="mt-1 text-sm leading-6 text-success-muted">
-                    Asmi can work in the channels and conversations you approved.
+                    Asmi can help from the channels and conversations you approved.
                   </p>
                 </div>
               </div>
