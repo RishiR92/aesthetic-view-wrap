@@ -96,7 +96,7 @@ function SlackSuccessPage() {
               Your AI for<br className="hidden sm:block" /> Real World Chores.
             </h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-success-muted sm:text-lg sm:leading-8">
-              Your team can hand off calls, messages, bookings, and follow-ups directly from Slack. Asmi handles the work beyond the screen.
+              Delegate bookings, appointments, orders, and follow-ups to Asmi straight from Slack.
             </p>
           </div>
 
