@@ -96,7 +96,7 @@ function SlackSuccessPage() {
               Your AI for<br className="hidden sm:block" /> Real World Chores.
             </h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-success-muted sm:text-lg sm:leading-8">
-              Delegate bookings, appointments, orders, and follow-ups to Asmi straight from Slack.
+              Your team can now delete bookings, appointments, orders, and follow ups to asmi straight from Slack.
             </p>
           </div>
 
