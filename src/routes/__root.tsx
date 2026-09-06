@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -99,7 +100,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600&display=swap",
       },
       {
         rel: "stylesheet",
@@ -130,14 +131,21 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const isSlackSuccess = useRouterState({
+    select: (state) => state.location.pathname === "/slack/success",
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <RemindersProvider>
-        <MobileShell>
+        {isSlackSuccess ? (
           <Outlet />
-        </MobileShell>
+        ) : (
+          <MobileShell>
+            <Outlet />
+          </MobileShell>
+        )}
         <Toaster position="top-center" />
       </RemindersProvider>
     </QueryClientProvider>
