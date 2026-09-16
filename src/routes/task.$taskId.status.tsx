@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Check, ChevronDown, Mail, MessageSquare, Pause, Play, Phone, CircleCheck } from "lucide-react";
+import { Check, ChevronDown, Mail, MessageSquare, Pause, Play, CircleCheck } from "lucide-react";
 
 import { getTask } from "@/lib/mock-tasks";
 import { TopBar } from "@/components/top-bar";
@@ -24,6 +24,8 @@ export const Route = createFileRoute("/task/$taskId/status")({
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
       ],
     };
   },
