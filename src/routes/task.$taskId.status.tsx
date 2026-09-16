@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { useState } from "react";
-import { Check, ChevronDown, MessageSquare, Play, Phone, CircleCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, ChevronDown, Mail, MessageSquare, Pause, Play, CircleCheck } from "lucide-react";
 
 import { getTask } from "@/lib/mock-tasks";
 import { TopBar } from "@/components/top-bar";
@@ -24,6 +24,8 @@ export const Route = createFileRoute("/task/$taskId/status")({
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
       ],
     };
   },
@@ -35,6 +37,23 @@ function TaskStatus() {
   const [showChat, setShowChat] = useState(false);
   const [showRecording, setShowRecording] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playback, setPlayback] = useState(0);
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    const timer = window.setInterval(() => {
+      setPlayback((value) => {
+        if (value >= 100) {
+          setIsPlaying(false);
+          return 0;
+        }
+        return value + 1;
+      });
+    }, 180);
+    return () => window.clearInterval(timer);
+  }, [isPlaying]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -62,7 +81,7 @@ function TaskStatus() {
             </span>
             <span className="flex items-center gap-2">
               <span className="rounded-full bg-cream-foreground/8 px-2 py-0.5 text-[11px] font-semibold text-cream-foreground/70">
-                1 answered
+                 {task.confirmedDetails?.length ?? 1} confirmed
               </span>
               <ChevronDown
                 className={cn(
@@ -74,8 +93,16 @@ function TaskStatus() {
           </button>
           {showDetails ? (
             <div className="border-t border-cream-foreground/10 px-5 py-4 text-[13px] leading-snug text-cream-foreground/80">
-              <p className="font-semibold text-cream-foreground">Preferred time</p>
-              <p>Tuesday or Wednesday, around 5:00 PM</p>
+              {task.confirmedDetails ? (
+                <dl className="divide-y divide-cream-foreground/10">
+                  {task.confirmedDetails.map((detail) => (
+                    <div key={detail.label} className="grid grid-cols-[72px_1fr] gap-3 py-2.5 first:pt-0 last:pb-0">
+                      <dt className="text-cream-foreground/50">{detail.label}</dt>
+                      <dd className="font-semibold text-cream-foreground">{detail.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : null}
             </div>
           ) : null}
         </section>
@@ -177,8 +204,8 @@ function TaskStatus() {
                 className="flex w-full items-center justify-between px-4 py-3"
               >
                 <span className="flex items-center gap-2.5 text-[13px] font-semibold text-cream-foreground">
-                  <span className="grid size-8 place-items-center rounded-full bg-cta text-cta-foreground">
-                    <Play className="size-3.5 fill-current" strokeWidth={0} />
+                   <span className="grid size-8 place-items-center rounded-full bg-cta text-cta-foreground">
+                     <Play className="size-3.5 fill-current" strokeWidth={0} />
                   </span>
                   <span className="text-left">
                     Call recording
@@ -196,16 +223,21 @@ function TaskStatus() {
               </button>
               {showRecording ? (
                 <div className="border-t border-cream-foreground/10 p-4">
-                  <div className="flex items-center gap-3">
-                    <span className="grid size-9 place-items-center rounded-full bg-cream-foreground/10 text-cream-foreground">
-                      <Phone className="size-4" strokeWidth={2} />
-                    </span>
-                    <span className="flex h-8 flex-1 items-end gap-[3px]">
+                   <div className="flex items-center gap-3">
+                     <button
+                       type="button"
+                       aria-label={isPlaying ? "Pause call recording" : "Play call recording"}
+                       onClick={() => setIsPlaying((value) => !value)}
+                       className="grid size-10 shrink-0 place-items-center rounded-full bg-cta text-cta-foreground transition-transform active:scale-95"
+                     >
+                       {isPlaying ? <Pause className="size-4 fill-current" /> : <Play className="ml-0.5 size-4 fill-current" />}
+                     </button>
+                     <span className="relative flex h-9 flex-1 items-end gap-[3px] overflow-hidden">
                       {[6, 12, 20, 14, 26, 18, 30, 22, 12, 24, 16, 28, 10, 20, 14, 8, 18, 26, 12, 6].map(
                         (h, i) => (
                           <span
                             key={i}
-                            className="flex-1 rounded-full bg-cta/70"
+                             className={cn("flex-1 rounded-full", i / 20 <= playback / 100 ? "bg-cta" : "bg-cream-foreground/18")}
                             style={{ height: `${h}px` }}
                           />
                         ),
@@ -225,6 +257,46 @@ function TaskStatus() {
                       </li>
                     ))}
                   </ul>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+
+          {task.email ? (
+            <div className="mt-3 overflow-hidden rounded-2xl border border-cream-foreground/12">
+              <button
+                type="button"
+                onClick={() => setShowEmail((value) => !value)}
+                className="flex w-full items-center justify-between px-4 py-3"
+              >
+                <span className="flex min-w-0 items-center gap-2.5 text-[13px] font-semibold text-cream-foreground">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full bg-primary/20 text-cream-foreground">
+                    <Mail className="size-4" strokeWidth={2} />
+                  </span>
+                  <span className="min-w-0 text-left">
+                    Final details emailed
+                    <span className="block truncate text-[11px] font-normal text-cream-foreground/55">
+                      To {task.email.to} · {task.email.at}
+                    </span>
+                  </span>
+                </span>
+                <ChevronDown className={cn("size-4 shrink-0 text-cream-foreground/50 transition-transform", showEmail && "rotate-180")} />
+              </button>
+              {showEmail ? (
+                <div className="border-t border-cream-foreground/10 p-4">
+                  <div className="rounded-xl bg-cream-foreground/6 p-3.5">
+                    <div className="grid grid-cols-[48px_1fr] gap-x-2 gap-y-1 text-[11px]">
+                      <span className="text-cream-foreground/45">To</span>
+                      <span className="truncate font-medium text-cream-foreground/75">{task.email.to}</span>
+                      <span className="text-cream-foreground/45">Subject</span>
+                      <span className="font-semibold text-cream-foreground">{task.email.subject}</span>
+                    </div>
+                    <div className="mt-3 space-y-2 border-t border-cream-foreground/10 pt-3">
+                      {task.email.body.map((paragraph) => (
+                        <p key={paragraph} className="text-[12px] leading-relaxed text-cream-foreground/75">{paragraph}</p>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ) : null}
             </div>
