@@ -32,7 +32,7 @@ export function ChannelSpine({ steps }: { steps: ChannelStep[] }) {
               <span
                 className={cn(
                   "grid size-10 place-items-center rounded-full",
-                  step.state === "done" && "bg-cream-foreground/25 text-cream-foreground",
+                   step.state === "done" && "bg-primary text-primary-foreground",
                   step.state === "skipped" &&
                     "border border-dashed border-cream-foreground/35 text-cream-foreground/45",
                   step.state === "active" && "bg-cream-foreground text-cream pulse-ring",

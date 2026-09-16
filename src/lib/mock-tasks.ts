@@ -46,11 +46,18 @@ export type Task = {
   timeline: { time: string; event: string; state?: "done" | "skipped" | "active" }[];
   thread: { from: "asmi" | "them"; text: string; time: string }[];
   outcome?: { label: string; headline: string; detail: string; at: string };
+  confirmedDetails?: { label: string; value: string }[];
   recording?: {
     to: string;
     at: string;
     duration: string;
     transcript: { from: "asmi" | "them"; text: string }[];
+  };
+  email?: {
+    to: string;
+    subject: string;
+    at: string;
+    body: string[];
   };
 };
 
@@ -161,73 +168,79 @@ export const tasks: Task[] = [
     },
   },
   {
-    id: "dentist",
+    id: "gardener",
     kind: "Service",
-    title: "Schedule Glen Park Dental appointment",
+    title: "Book Quality Green Gardening",
     brief:
-      "Send details (last name Kesley, phone +1 415 585 1500, found online) to Glen Park Dental to confirm a dentist appointment for Rish's toothache on Tuesday or Wednesday around 5:00 PM.",
-    asmiAction: "Reached Glen Park Dental by call, then confirmed over message.",
-    plan: "Asmi will call your pick, hold the earliest cleaning slot and confirm it over message.",
+      "Call Quality Green Gardening and Landscaping (+1 669 228 3221) on behalf of Rish at 73 Nora St, Atherton, CA to request a quote and check availability for garden cleanup—clearing dry pine needles, leaves, and debris from the brick pathways.",
+    asmiAction: "Booked over call and sent the final details by email.",
+    plan: "Asmi will confirm the cleanup scope, crew, price, and arrival time directly with the gardener.",
     status: "in-motion",
-    liveLine: "Appointment confirmed",
-    ago: "8m ago",
+    liveLine: "Gardener booked",
+    ago: "Just now",
     options: [
       {
-        id: "glen-park-dental",
-        name: "Glen Park Dental",
-        address: "2865 Diamond St, Glen Park",
-        hours: "Open · Closes 5 PM",
-        rating: 4.8,
-        reviews: 412,
+        id: "quality-green-gardening",
+        name: "Quality Green Gardening & Landscaping",
+        address: "Serving Atherton, CA",
+        hours: "Booked · Friday 3 PM",
+        rating: 4.9,
+        reviews: 86,
         photos: [dental],
-        tags: ["Insurance", "Emergency"],
-        distance: "2.4 mi",
-        website: { label: "glenparkdental.com", href: "https://www.glenparkdental.com" },
-        phone: "+1 415 585 1500",
+        tags: ["Garden cleanup", "2-person crew"],
+        distance: "Atherton",
+        phone: "+1 669 228 3221",
       },
     ],
     steps: [
-      { label: "Call", state: "done", detail: "2m 14s", icon: "call" },
+      { label: "Call", state: "done", detail: "4m 18s", icon: "call" },
       { label: "Retry", state: "skipped", detail: "Not needed", icon: "retry" },
-      { label: "Message", state: "done", detail: "Confirmed", icon: "message" },
-      { label: "Email", state: "skipped", detail: "Not needed", icon: "email" },
+      { label: "Message", state: "skipped", detail: "Not needed", icon: "message" },
+      { label: "Email", state: "done", detail: "Details sent", icon: "email" },
     ],
     timeline: [
-      { time: "3:11 PM", event: "Call placed to +1 415 585 1500", state: "done" },
-      { time: "3:13 PM", event: "Spoke with the front desk — 2m 14s call", state: "done" },
-      { time: "3:14 PM", event: "Retry skipped — call connected first time", state: "skipped" },
-      { time: "3:20 PM", event: "Message sent with Rish's details", state: "done" },
-      { time: "3:24 PM", event: "Front desk replied confirming Wednesday 5:00 PM", state: "done" },
-      { time: "3:25 PM", event: "Task complete — email follow-up not needed", state: "done" },
+      { time: "6:35 PM", event: "Called Quality Green Gardening at +1 669 228 3221", state: "done" },
+      { time: "6:39 PM", event: "Friday at 3:00 PM confirmed for $450 with a two-person crew", state: "done" },
+      { time: "6:40 PM", event: "Final cleanup and arrival details emailed to the gardener", state: "done" },
+      { time: "6:40 PM", event: "Booking complete", state: "done" },
     ],
-    thread: [
-      {
-        from: "asmi",
-        text: "Hi! Following up on the call — booking for Rish Kesley, toothache, Wednesday 5:00 PM. Phone +1 415 585 1500.",
-        time: "3:20 PM",
-      },
-      {
-        from: "them",
-        text: "Got it. Wednesday 5:00 PM with Dr. Lin is confirmed. Please arrive 10 minutes early.",
-        time: "3:24 PM",
-      },
-      { from: "asmi", text: "Perfect, thank you! Rish will be there.", time: "3:25 PM" },
-    ],
+    thread: [],
     outcome: {
       label: "Resolved",
-      headline: "Glen Park Dental confirmed Wednesday at 5:00 PM with Dr. Lin.",
+      headline: "Quality Green Gardening is booked for Friday at 3:00 PM.",
       detail:
-        "Asmi called the front desk, shared Rish's details, and confirmed over message. Arrive 10 minutes early; insurance card required.",
-      at: "Aug 17, 3:25 PM",
+        "A two-person crew will clear the dry pine needles, leaves, and debris from the brick pathways at 73 Nora St for $450. Pay after the work is complete.",
+      at: "Today, 6:40 PM",
     },
+    confirmedDetails: [
+      { label: "When", value: "Friday · 3:00 PM" },
+      { label: "Where", value: "73 Nora St, Atherton, CA" },
+      { label: "Crew", value: "Gardener + 1 helper" },
+      { label: "Price", value: "$450 · pay after service" },
+      { label: "Scope", value: "Dry pine needles, leaves, and debris cleared from brick pathways" },
+    ],
     recording: {
-      to: "+1 415 585 1500",
-      at: "3:11 PM",
-      duration: "2:14",
+      to: "+1 669 228 3221",
+      at: "6:35 PM",
+      duration: "4:18",
       transcript: [
-        { from: "asmi", text: "Hi, I'm calling on behalf of Rish Kesley about a toothache appointment." },
-        { from: "them", text: "Sure — we have Wednesday at 5:00 PM open with Dr. Lin." },
-        { from: "asmi", text: "Wednesday 5:00 PM works. I'll text over the details now." },
+        { from: "asmi", text: "Hi, I'm calling on behalf of Rish about a garden cleanup at 73 Nora Street in Atherton." },
+        { from: "asmi", text: "The job is to clear dry pine needles, leaves, and debris from the brick pathways. Are you available Friday at 3 PM?" },
+        { from: "them", text: "Yes. I'll bring one helper, so there will be two of us. The total will be $450." },
+        { from: "asmi", text: "Perfect—Friday at 3 PM, two people, $450 total, and payment after the cleanup is finished. Is that all confirmed?" },
+        { from: "them", text: "Confirmed. We'll bring our own tools and bags." },
+        { from: "asmi", text: "Great. I'll email the address and full scope now so you have everything in writing." },
+      ],
+    },
+    email: {
+      to: "contact@gglandscaping.info",
+      subject: "Confirmed: garden cleanup Friday at 3 PM",
+      at: "6:40 PM",
+      body: [
+        "Hi Quality Green Gardening team,",
+        "Confirming Friday at 3:00 PM at 73 Nora St, Atherton, CA.",
+        "Scope: clear dry pine needles, leaves, and debris from the brick pathways. You’ll arrive with one helper, making a two-person crew. The agreed total is $450, payable after the work is complete.",
+        "Please bring all tools and cleanup bags. Thank you.",
       ],
     },
   },
